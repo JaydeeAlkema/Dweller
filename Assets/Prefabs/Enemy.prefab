@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4695371258194623360}
   - component: {fileID: 4695371258194623366}
   - component: {fileID: 3990864826125460546}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 4695371258440476631}
   - component: {fileID: 4695371258440476629}
   - component: {fileID: 1498447947266702347}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,5 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eeb22d303010634cbaea93a42838006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   enemyStats: {fileID: 11400000, guid: f7a0c0383d2a2c1409259d9541730f8a, type: 2}
   pathfinder: {fileID: 4695371258440476631}
+  targetTransform: {fileID: 0}
