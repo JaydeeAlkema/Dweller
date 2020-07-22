@@ -7,6 +7,13 @@
 public class PlayerMovement : MonoBehaviour
 {
 	#region Private Variables
+	private enum PlayerState
+	{
+		Idle,
+		Running,
+	}
+
+	[SerializeField] private PlayerState state = PlayerState.Idle;
 	[Header("Movement Stats")]
 	[SerializeField] private float walkSpeed = 2f;                      // How fast you walk
 	[SerializeField] private float runSpeed = 5.5f;                     // How fast you run
@@ -21,18 +28,19 @@ public class PlayerMovement : MonoBehaviour
 	[Header("Weapon Atributes")]
 	[SerializeField] private Transform weaponPivot = default;           // Refernce to the current weapon pivot.
 
-	private Rigidbody2D rb2d = default;                                 // Reference to the Rigidbody2D component.
+	[Header("Components")]
+	[SerializeField] private Rigidbody2D rb2d = default;                // Reference to the Rigidbody2D component.
+	[SerializeField] private Animator anim = default;                   // Reference to the Animator component.
+	[SerializeField] private SpriteRenderer sprite = default;           // Reference to the SpriteRenderer Component.
 	#endregion
 
 	#region Monobehaviour Callbacks
-	private void Awake()
-	{
-		rb2d = GetComponent<Rigidbody2D>();
-	}
-
 	private void Update()
 	{
 		ProcessPlayerInput();
+		FlipSprite();
+		SetPlayerState();
+		SetAnimation();
 	}
 
 	private void FixedUpdate()
@@ -56,11 +64,34 @@ public class PlayerMovement : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Set's the PlayerState depending on the movementvector.
+	/// </summary>
+	private void SetPlayerState()
+	{
+		if(movementInputVector == Vector2.zero)
+			state = PlayerState.Idle;
+		else
+			state = PlayerState.Running;
+	}
+
+	/// <summary>
 	/// Moves the Rigidbody2D according to the input giving by the player.
 	/// </summary>
 	private void Move()
 	{
 		rb2d.MovePosition(rb2d.position + movementInputVector.normalized * movementVelocity * Time.fixedDeltaTime);
+	}
+
+	/// <summary>
+	/// Flips the sprite depending on the direction the player is moving.
+	/// </summary>
+	private void FlipSprite()
+	{
+		if(movementInputVector.x > 0f)
+			sprite.flipX = false;
+		else if(movementInputVector.x < 0f)
+			sprite.flipX = true;
+
 	}
 	#endregion
 
@@ -74,6 +105,13 @@ public class PlayerMovement : MonoBehaviour
 		Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 		weaponPivot.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
+	}
+	#endregion
+
+	#region Animations
+	private void SetAnimation()
+	{
+		anim.SetInteger("State", (int)state);
 	}
 	#endregion
 }

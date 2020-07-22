@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7338752091603514949}
   - component: {fileID: 7338752091603514948}
   - component: {fileID: 7338752091603514946}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -84,6 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50f36585b6f4de5429e517934eb53e1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   walkSpeed: 3
   runSpeed: 5.5
   movementVelocity: 0
@@ -92,6 +93,9 @@ MonoBehaviour:
   runKey: 304
   movementInputVector: {x: 0, y: 0}
   weaponPivot: {fileID: 7338752092185619400}
+  rb2d: {fileID: 7338752091603514949}
+  anim: {fileID: 8365230245528723502}
+  sprite: {fileID: 7338752091886056520}
 --- !u!1 &7338752091886056566
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,6 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7338752091886056521}
   - component: {fileID: 7338752091886056520}
+  - component: {fileID: 8365230245528723502}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -162,7 +167,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 079d03730e8dd0e4fad95e20e3a3e796, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a41e2ea53f9be4a42a57b71a907228ad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -173,6 +178,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &8365230245528723502
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338752091886056566}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a8c9c15b2fdd4c94696d8dda0b243823, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &7338752092185619401
 GameObject:
   m_ObjectHideFlags: 0
@@ -197,7 +221,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7338752092185619401}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.104, z: 0}
+  m_LocalPosition: {x: 0, y: -0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7338752093256950771}
