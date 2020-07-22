@@ -114,9 +114,10 @@ GameObject:
   - component: {fileID: 4695371258440476631}
   - component: {fileID: 4695371258440476629}
   - component: {fileID: 1498447947266702347}
+  - component: {fileID: 1154479398}
   m_Layer: 10
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -230,3 +231,23 @@ MonoBehaviour:
   enemyStats: {fileID: 11400000, guid: f7a0c0383d2a2c1409259d9541730f8a, type: 2}
   pathfinder: {fileID: 4695371258440476631}
   targetTransform: {fileID: 0}
+  name: 
+  description: 
+  health: 0
+  damageOnHit: 0
+--- !u!58 &1154479398
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4695371258440476625}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.25

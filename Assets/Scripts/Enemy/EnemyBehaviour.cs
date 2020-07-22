@@ -20,11 +20,11 @@ public class EnemyBehaviour : MonoBehaviour
 	[SerializeField] protected EnemyStats enemyStats = default;
 	[SerializeField] protected AIPath pathfinder = default;
 	[SerializeField] protected Transform targetTransform = default;       // Target Transform.
-
-	private new string name = "";                      // Name of the Enemy. Also uses this name on the gameobject.
-	private string description = "";                   // Description of this enemy. Maybe used later for in a journal kind of menu?
-	private float health = 100f;                       // Health of this enemy.
-	private float damageOnHit = 10f;                   // How much damage the enemy deals when hitting it's target.
+	[Space]
+	[SerializeField] protected new string name = "";                      // Name of the Enemy. Also uses this name on the gameobject.
+	[SerializeField] protected string description = "";                   // Description of this enemy. Maybe used later for in a journal kind of menu?
+	[SerializeField] protected int health = 100;                       // Health of this enemy.
+	[SerializeField] protected int damageOnHit = 10;                   // How much damage the enemy deals when hitting it's target.
 
 	private float movementSpeed = 2.5f;                // The enemy can't run, And the general movement speed is lower than the player.
 	private float movementDestinationInterval = 0.25f; // How many seconds inbetween target destination is set. Better performance.	
@@ -122,4 +122,5 @@ public class EnemyBehaviour : MonoBehaviour
 		Gizmos.color = Color.blue;
 		Gizmos.DrawWireSphere(transform.position, targetDetectionRange);
 	}
+
 }

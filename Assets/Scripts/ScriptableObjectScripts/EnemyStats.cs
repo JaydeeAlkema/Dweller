@@ -7,8 +7,8 @@ public class EnemyStats : ScriptableObject
 	[Header("Enemy Properties")]
 	[SerializeField] private new string name = "";                      // Name of the Enemy. Also uses this name on the gameobject.
 	[SerializeField] private string description = "";                   // Description of this enemy. Maybe used later for in a journal kind of menu?
-	[SerializeField] private float health = 100f;                       // Health of this enemy.
-	[SerializeField] private float damageOnHit = 10f;                   // How much damage the enemy deals when hitting it's target.
+	[SerializeField] private int health = 100;                       // Health of this enemy.
+	[SerializeField] private int damageOnHit = 10;                   // How much damage the enemy deals when hitting it's target.
 	[SerializeField] private LayerMask targetDetectionMask = default;	// Which mask to check for the target.
 
 	[Header("Movement Stats")]
@@ -23,8 +23,8 @@ public class EnemyStats : ScriptableObject
 	#region Public Properties
 	public string Name { get => name; set => name = value; }
 	public string Description { get => description; set => description = value; }
-	public float Health { get => health; set => health = value; }
-	public float DamageOnHit { get => damageOnHit; set => damageOnHit = value; }
+	public int Health { get => health; set => health = value; }
+	public int DamageOnHit { get => damageOnHit; set => damageOnHit = value; }
 	public LayerMask TargetDetectionMask { get => targetDetectionMask; set => targetDetectionMask = value; }
 
 	public float MovementSpeed { get => movementSpeed; set => movementSpeed = value; }

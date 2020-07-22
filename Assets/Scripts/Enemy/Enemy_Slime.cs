@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Enemy_Slime : EnemyBehaviour
+public class Enemy_Slime : EnemyBehaviour, IDamageable
 {
 	public Enemy_Slime(EnemyStats _enemyStats, AIPath _pathfinder) : base(_enemyStats, _pathfinder)
 	{
@@ -33,6 +33,18 @@ public class Enemy_Slime : EnemyBehaviour
 			yield return new WaitForSeconds(0.25f);
 		}
 	}
+
+	#region IDamageable Interface Implemenation
+	/// <summary>
+	/// IDamageable Interface Damage Implementation.
+	/// </summary>
+	/// <param name="value"></param>
+	public void Damage(int value)
+	{
+		health -= value;
+		if(health <= 0) Destroy(gameObject);
+	}
+	#endregion
 
 	private void OnDrawGizmos()
 	{
