@@ -33,12 +33,12 @@ public class PlayerMovement : MonoBehaviour
 	private void Update()
 	{
 		ProcessPlayerInput();
-		RotateWeaponPivotTowardsMouse();
 	}
 
 	private void FixedUpdate()
 	{
 		Move();
+		RotateWeaponPivotTowardsMouse();
 	}
 	#endregion
 
@@ -53,8 +53,6 @@ public class PlayerMovement : MonoBehaviour
 		movementInputVector.y = Input.GetAxisRaw(verticalAxis);
 		// Add some lerp between walk and run?
 		movementVelocity = Input.GetKey(runKey) ? runSpeed : walkSpeed;
-
-		// Handle other input like attacking, interaction, etc.
 	}
 
 	/// <summary>
