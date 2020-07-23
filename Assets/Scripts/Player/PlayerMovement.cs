@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private Vector2 movementInputVector = default;     // Vector with the movement input variables.
 
 	[Header("Weapon Atributes")]
-	[SerializeField] private Transform weaponPivot = default;           // Refernce to the current weapon pivot.
+	[SerializeField] private Transform weaponPivot = default;           // Reference to the current weapon pivot.
 
 	[Header("Components")]
 	[SerializeField] private Rigidbody2D rb2d = default;                // Reference to the Rigidbody2D component.
@@ -109,6 +109,9 @@ public class PlayerMovement : MonoBehaviour
 	#endregion
 
 	#region Animations
+	/// <summary>
+	/// Sets the animation appropriately.
+	/// </summary>
 	private void SetAnimation()
 	{
 		anim.SetInteger("State", (int)state);

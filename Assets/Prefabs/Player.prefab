@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7338752091603514947}
   - component: {fileID: 7338752091603514949}
-  - component: {fileID: 7338752091603514948}
   - component: {fileID: 7338752091603514946}
+  - component: {fileID: 948076549597881241}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -51,27 +51,11 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 0320d7077302f1341b67cdad38efcef0, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &7338752091603514948
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7338752091603514944}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.10817456}
-  serializedVersion: 2
-  m_Radius: 0.20839429
 --- !u!114 &7338752091603514946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,6 +80,22 @@ MonoBehaviour:
   rb2d: {fileID: 7338752091603514949}
   anim: {fileID: 8365230245528723502}
   sprite: {fileID: 7338752091886056520}
+--- !u!70 &948076549597881241
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338752091603514944}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.016035795, y: -0.19586515}
+  m_Size: {x: 0.23117399, y: 0.45707512}
+  m_Direction: 0
 --- !u!1 &7338752091886056566
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +239,7 @@ GameObject:
   - component: {fileID: 7338752093256950771}
   - component: {fileID: 7338752093256950770}
   - component: {fileID: 723171580047249873}
+  - component: {fileID: 1538914426}
   m_Layer: 0
   m_Name: weapon_rusty_sword
   m_TagString: Untagged
@@ -323,7 +324,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.09390992}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -334,5 +335,18 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.19830829, y: 0.65625}
+  m_Size: {x: 0.12447582, y: 0.34148967}
   m_EdgeRadius: 0
+--- !u!114 &1538914426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7338752093256950768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50024539af4a35d418f51bd614be7806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: fdb49ffd846d6204ea245a1d7472bdc2, type: 2}

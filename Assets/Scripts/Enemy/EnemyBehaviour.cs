@@ -16,15 +16,16 @@ public class EnemyBehaviour : MonoBehaviour
 	}
 
 	[Header("Enemy Properties")]
+	[SerializeField] protected LayerMask LinecastHitMask;
 	[SerializeField] protected EnemyState state = EnemyState.Idle;
 	[SerializeField] protected EnemyStats enemyStats = default;
 	[SerializeField] protected AIPath pathfinder = default;
 	[SerializeField] protected Transform targetTransform = default;       // Target Transform.
-	[Space]
-	[SerializeField] protected new string name = "";                      // Name of the Enemy. Also uses this name on the gameobject.
-	[SerializeField] protected string description = "";                   // Description of this enemy. Maybe used later for in a journal kind of menu?
-	[SerializeField] protected int health = 100;                       // Health of this enemy.
-	[SerializeField] protected int damageOnHit = 10;                   // How much damage the enemy deals when hitting it's target.
+
+	private new string name = "";                      // Name of the Enemy. Also uses this name on the gameobject.
+	private string description = "";                   // Description of this enemy. Maybe used later for in a journal kind of menu?
+	private int health = 100;                       // Health of this enemy.
+	private int damageOnHit = 10;                   // How much damage the enemy deals when hitting it's target.
 
 	private float movementSpeed = 2.5f;                // The enemy can't run, And the general movement speed is lower than the player.
 	private float movementDestinationInterval = 0.25f; // How many seconds inbetween target destination is set. Better performance.	
@@ -33,7 +34,9 @@ public class EnemyBehaviour : MonoBehaviour
 	private float targetAttackRange = 2f;              // Range within the enemy can attack the target.
 
 	private Animator anim = default;
-	private LayerMask targetDetectionMask = default;
+	private RaycastHit2D hit = default;
+	private AIDestinationSetter destinationSetter = default;
+	private SpriteRenderer spriteRenderer = default;
 	#endregion
 
 	public EnemyBehaviour(EnemyStats _enemyStats, AIPath _pathfinder)
@@ -42,28 +45,20 @@ public class EnemyBehaviour : MonoBehaviour
 		pathfinder = _pathfinder;
 	}
 
-	#region Monobehaviour Callbacks
-	private void Start()
-	{
-		InitializeStats();
-	}
-
-	private void Update()
-	{
-		SetActiveWhenTargetInRange();
-		SetAnimation();
-	}
-	#endregion
-
 	#region Protected Voids
 	/// <summary>
-	/// Initializes all the stats from the EnemyStats object.
+	/// Initializes the EnemyBehaviour Class with all the required EnemyStats, Components, etc.
 	/// </summary>
-	protected virtual void InitializeStats()
+	protected virtual void Initialize()
 	{
 		targetTransform = GameManager.Instance.PlayerInstance.transform;
 		anim = GetComponentInChildren<Animator>();
-		targetDetectionMask = enemyStats.TargetDetectionMask;
+		LinecastHitMask = enemyStats.TargetDetectionMask;
+
+		destinationSetter = GetComponent<AIDestinationSetter>();
+		destinationSetter.target = targetTransform;
+
+		spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
 		name = enemyStats.Name;
 		description = enemyStats.Description;
@@ -85,25 +80,33 @@ public class EnemyBehaviour : MonoBehaviour
 	/// The target will be acquired through the GameManager.
 	/// This will check if the target is within the detection range to set this enemy active.
 	/// </summary>
-	protected virtual void SetActiveWhenTargetInRange()
+	protected virtual void FollowTargetWhenInRange()
 	{
-		// First check if the target is in range.
-		if(Vector2.Distance(transform.position, targetTransform.position) < targetDetectionRange)
+		if(state == EnemyState.Attacking || state == EnemyState.Idle)
 		{
-			// Check if there are no obstacle in the way, Avoiding enemies detecting the target through walls etc.
-			RaycastHit2D hit = Physics2D.Linecast(transform.position, targetTransform.position, targetDetectionMask);
-			if(hit.collider != null)
+			if(CanFollowTarget() && !CanAttackTarget())
 			{
-				if(hit.collider.gameObject.CompareTag("Player"))
+				if(CanSeeTargetWithTag("Player"))
 				{
-					pathfinder.canSearch = true;
 					state = EnemyState.Chasing;
-					Debug.DrawLine(transform.position, targetTransform.position, Color.green);
+					pathfinder.canSearch = true;
 				}
-				else
-				{
-					Debug.DrawLine(transform.position, targetTransform.position, Color.red);
-				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Attack the target when in range.
+	/// The attack pattern may change drastically per enemy.
+	/// </summary>
+	protected virtual void AttackWhenInRange()
+	{
+		if(state == EnemyState.Chasing || state == EnemyState.Idle)
+		{
+			if(CanAttackTarget())
+			{
+				state = EnemyState.Attacking;
+				targetTransform.GetComponent<IDamageable>()?.Damage(damageOnHit);
 			}
 		}
 	}
@@ -115,6 +118,52 @@ public class EnemyBehaviour : MonoBehaviour
 	{
 		anim.SetInteger("State", (int)state);
 	}
+
+	/// <summary>
+	/// Flips the sprite depending on which way the enemy SHOULD be facing the target.
+	/// </summary>
+	protected void FlipSprite()
+	{
+		// Get direction. Flip sprite accordingly.
+		Vector2 direction = transform.position - targetTransform.position;
+		spriteRenderer.flipX = direction.x < 0 ? false : true;
+	}
+	#endregion
+
+	#region Private Voids
+	/// <summary>
+	/// Checks of the enemy can see the target with the given tag.
+	/// Also Checks if there are no obstacle in the way, Avoiding the problem where the enemy detects the target through walls etc.
+	/// </summary>
+	/// <param name="tag"></param>
+	/// <returns></returns>
+	private bool CanSeeTargetWithTag(string tag)
+	{
+		hit = Physics2D.Linecast(transform.position, targetTransform.position, LinecastHitMask);
+		if(hit.collider != null)
+			return hit.collider.gameObject.CompareTag(tag) ? true : false;
+		else
+			return false;
+	}
+
+	/// <summary>
+	/// Checks if the enemy is close enough to the target to follow, but not too close to attack.
+	/// </summary>
+	/// <returns></returns>
+	private bool CanFollowTarget()
+	{
+		return Vector2.Distance(transform.position, targetTransform.position) < targetDetectionRange ? true : false;
+	}
+
+	/// <summary>
+	/// Checks if the enemy is close enough to the target to start attacking.
+	/// </summary>
+	/// <returns></returns>
+	private bool CanAttackTarget()
+	{
+		return Vector2.Distance(transform.position, targetTransform.position) < targetAttackRange ? true : false;
+	}
+
 	#endregion
 
 	private void OnDrawGizmosSelected()
