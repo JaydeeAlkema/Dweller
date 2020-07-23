@@ -49,8 +49,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDrag: 2.5
+  m_AngularDrag: 2.5
   m_GravityScale: 0
   m_Material: {fileID: 6200000, guid: 0320d7077302f1341b67cdad38efcef0, type: 2}
   m_Interpolate: 0
@@ -87,6 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb2d: {fileID: 7338752091603514949}
   anim: {fileID: 8365230245528723502}
+  movement: {fileID: 7338752091603514946}
 --- !u!114 &7338752091603514946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,7 +262,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7338752093256950771
 Transform:
   m_ObjectHideFlags: 0

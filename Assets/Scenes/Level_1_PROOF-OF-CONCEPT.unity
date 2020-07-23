@@ -22619,53 +22619,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!1 &153474192
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 153474193}
-  - component: {fileID: 153474194}
-  m_Layer: 10
-  m_Name: ObstacleCollision
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &153474193
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 153474192}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1154479402}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &153474194
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 153474192}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 6200000, guid: 0320d7077302f1341b67cdad38efcef0, type: 2}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.030000001}
-  serializedVersion: 2
-  m_Radius: 0.15
 --- !u!1 &243780309
 GameObject:
   m_ObjectHideFlags: 0
@@ -33719,18 +33672,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1648128260}
   m_CullTransparentMesh: 0
---- !u!114 &1655625745 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7338752091603514946, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
-    type: 3}
-  m_PrefabInstance: {fileID: 7338752093173634665}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f36585b6f4de5429e517934eb53e1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1659527210 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7338752091603514947, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
@@ -34324,22 +34265,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 993233540}
     m_Modifications:
-    - target: {fileID: 1154479398, guid: f13bc30db78564248a82868afcf66dc7, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154479398, guid: f13bc30db78564248a82868afcf66dc7, type: 3}
-      propertyPath: m_Radius
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154479398, guid: f13bc30db78564248a82868afcf66dc7, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.030000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 1154479398, guid: f13bc30db78564248a82868afcf66dc7, type: 3}
-      propertyPath: m_Offset.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4695371258440476625, guid: f13bc30db78564248a82868afcf66dc7,
         type: 3}
       propertyPath: m_Name
@@ -34483,11 +34408,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 993233540}
     m_Modifications:
-    - target: {fileID: 6783236619508403244, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
-        type: 3}
-      propertyPath: movement
-      value: 
-      objectReference: {fileID: 1655625745}
     - target: {fileID: 7338752091603514944, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
         type: 3}
       propertyPath: m_Name
@@ -34546,21 +34466,6 @@ PrefabInstance:
     - target: {fileID: 7338752091603514947, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7338752091603514949, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
-        type: 3}
-      propertyPath: m_LinearDrag
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7338752091603514949, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
-        type: 3}
-      propertyPath: m_AngularDrag
-      value: 2.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7338752093256950768, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
