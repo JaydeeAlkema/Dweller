@@ -8,13 +8,13 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 {
 	#region Private Variables
 	[Header("Player Stats")]
-	[SerializeField] private PlayerStats stats = default;
-	[SerializeField] private int currentHitPoints = default;
+	[SerializeField] private PlayerStats stats = default;		// Reference to the Player Stats Scriptable Object. This holds all the stats for the player, this differs per character.
+	[SerializeField] private int currentHitPoints = default;	// Current amount of health.
 
 	[Header("Components")]
-	[SerializeField] private Rigidbody2D rb2d = default;
-	[SerializeField] private Animator anim = default;
-	[SerializeField] private PlayerMovement movement = default;
+	[SerializeField] private Rigidbody2D rb2d = default;		// Reference to the Rigidbody2D component.
+	[SerializeField] private Animator anim = default;			// Reference to the animator component.
+	[SerializeField] private PlayerMovement movement = default; // Reference to the PlayerMovement Component.
 	#endregion
 
 	#region Public Properties
@@ -44,6 +44,7 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 	#region IDamageable Implementation
 	public void Damage(int value)
 	{
+		anim.SetTrigger("Hit");
 		currentHitPoints -= value;
 		UIManager.Instance.UpdatePlayerHealthUI(stats.HitPoints, currentHitPoints);
 	}
