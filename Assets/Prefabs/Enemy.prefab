@@ -322,5 +322,6 @@ MonoBehaviour:
   targetTransform: {fileID: 0}
   currentHealth: 100
   targetDetectionInterval: 0.1
+  targetAttackCheckInterval: 0.1
   targetAttackInterval: 1
   rb2d: {fileID: 115272418435414845}

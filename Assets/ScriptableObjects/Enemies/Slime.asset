@@ -15,7 +15,7 @@ MonoBehaviour:
   name: Slime
   description: Very slimey
   health: 100
-  damageOnHit: 10
+  damageOnHit: 1
   targetDetectionMask:
     serializedVersion: 2
     m_Bits: 768

@@ -1,4 +1,5 @@
 ﻿using Pathfinding;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -11,8 +12,7 @@ public class EnemyBehaviour : MonoBehaviour
 	protected enum EnemyState
 	{
 		Idle,
-		Chasing,
-		Attacking
+		Chasing
 	}
 
 	[Header("Enemy Properties")]
@@ -31,12 +31,16 @@ public class EnemyBehaviour : MonoBehaviour
 	private float movementDestinationInterval = 0.25f; // How many seconds inbetween target destination is set. Better performance.	
 
 	private float targetDetectionRange = 6.5f;         // Range within the enemy can detect targets.
-	private float targetAttackRange = 2f;              // Range within the enemy can attack the target.
 
 	private Animator anim = default;
 	private RaycastHit2D hit = default;
 	private AIDestinationSetter destinationSetter = default;
 	private SpriteRenderer spriteRenderer = default;
+
+	#endregion
+
+	#region Public Properties
+	public EnemyStats EnemyStats { get => enemyStats; }
 	#endregion
 
 	public EnemyBehaviour(EnemyStats _enemyStats, AIPath _pathfinder)
@@ -69,7 +73,6 @@ public class EnemyBehaviour : MonoBehaviour
 		movementDestinationInterval = enemyStats.MovementDestinationInterval;
 
 		targetDetectionRange = enemyStats.TargetDetectionRange;
-		targetAttackRange = enemyStats.TargetAttackRange;
 
 		pathfinder.canSearch = false;
 		pathfinder.maxSpeed = movementSpeed;
@@ -82,31 +85,15 @@ public class EnemyBehaviour : MonoBehaviour
 	/// </summary>
 	protected virtual void FollowTargetWhenInRange()
 	{
-		if(state == EnemyState.Attacking || state == EnemyState.Idle)
+		if(state == EnemyState.Idle)
 		{
-			if(CanFollowTarget() && !CanAttackTarget())
+			if(CanFollowTarget())
 			{
 				if(CanSeeTargetWithTag("Player"))
 				{
 					state = EnemyState.Chasing;
 					pathfinder.canSearch = true;
 				}
-			}
-		}
-	}
-
-	/// <summary>
-	/// Attack the target when in range.
-	/// The attack pattern may change drastically per enemy.
-	/// </summary>
-	protected virtual void AttackWhenInRange()
-	{
-		if(state == EnemyState.Chasing || state == EnemyState.Idle)
-		{
-			if(CanAttackTarget())
-			{
-				state = EnemyState.Attacking;
-				targetTransform.GetComponent<IDamageable>()?.Damage(damageOnHit);
 			}
 		}
 	}
@@ -154,22 +141,5 @@ public class EnemyBehaviour : MonoBehaviour
 	{
 		return Vector2.Distance(transform.position, targetTransform.position) < targetDetectionRange ? true : false;
 	}
-
-	/// <summary>
-	/// Checks if the enemy is close enough to the target to start attacking.
-	/// </summary>
-	/// <returns></returns>
-	private bool CanAttackTarget()
-	{
-		return Vector2.Distance(transform.position, targetTransform.position) < targetAttackRange ? true : false;
-	}
-
 	#endregion
-
-	private void OnDrawGizmosSelected()
-	{
-		Gizmos.color = Color.blue;
-		Gizmos.DrawWireSphere(transform.position, targetDetectionRange);
-	}
-
 }

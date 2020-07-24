@@ -7,6 +7,7 @@ public class Enemy_Slime : EnemyBehaviour, IDamageable
 	[Header("Custom Properties")]
 	[SerializeField] private int currentHealth = default;             // The current health of the Enemy.
 	[SerializeField] private float targetDetectionInterval = default; // How often the Enemy will check for an target that is within range.
+	[SerializeField] private float targetAttackCheckInterval = default;    // Time checks if the enemy can attack the player.
 	[SerializeField] private float targetAttackInterval = default;    // Time between attacks.
 	[SerializeField] private Rigidbody2D rb2d = default;
 
@@ -21,7 +22,6 @@ public class Enemy_Slime : EnemyBehaviour, IDamageable
 		Initialize();
 
 		StartCoroutine(SetActiveWhenTargetInRangeOnInterval());
-		StartCoroutine(AttackTargetWhenInRangeOnInterval());
 	}
 
 	private void Update()
@@ -43,19 +43,6 @@ public class Enemy_Slime : EnemyBehaviour, IDamageable
 	#endregion
 
 	#region Target Detection & Target Attacking implementation
-	/// <summary>
-	/// Attacks the target on a set interval.
-	/// </summary>
-	/// <returns></returns>
-	private IEnumerator AttackTargetWhenInRangeOnInterval()
-	{
-		while(true)
-		{
-			AttackWhenInRange();
-			yield return new WaitForSeconds(targetAttackInterval);
-		}
-	}
-
 	/// <summary>
 	/// A simple IEnumerator for the target detection. No need to check every frame.
 	/// </summary>
