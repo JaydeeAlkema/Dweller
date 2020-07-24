@@ -8,13 +8,14 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 {
 	#region Private Variables
 	[Header("Player Stats")]
-	[SerializeField] private PlayerStats stats = default;		// Reference to the Player Stats Scriptable Object. This holds all the stats for the player, this differs per character.
-	[SerializeField] private int currentHitPoints = default;	// Current amount of health.
+	[SerializeField] private PlayerStats stats = default;       // Reference to the Player Stats Scriptable Object. This holds all the stats for the player, this differs per character.
+	[SerializeField] private int currentHitPoints = default;    // Current amount of health.
 
 	[Header("Components")]
-	[SerializeField] private Rigidbody2D rb2d = default;		// Reference to the Rigidbody2D component.
-	[SerializeField] private Animator anim = default;			// Reference to the animator component.
+	[SerializeField] private Rigidbody2D rb2d = default;        // Reference to the Rigidbody2D component.
+	[SerializeField] private Animator anim = default;           // Reference to the animator component.
 	[SerializeField] private PlayerMovement movement = default; // Reference to the PlayerMovement Component.
+	[SerializeField] private Collider2D playerCollider = default;
 	#endregion
 
 	#region Public Properties
@@ -34,10 +35,11 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if(collision.CompareTag("Enemy"))
-		{
-			StartCoroutine(OnEnemyCollision(collision));
-		}
+		if(playerCollider.IsTouching(collision))
+			if(collision.CompareTag("Enemy"))
+			{
+				StartCoroutine(OnEnemyCollision(collision));
+			}
 	}
 	#endregion
 
