@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 'Rusty Sword '
   description: Still does it's job, Barely.
-  damageOnHit: 10
+  damageOnHit: 1
   durability: 100
+  attackRange: 0.35

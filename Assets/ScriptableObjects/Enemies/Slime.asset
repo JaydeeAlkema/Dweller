@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Slime
   description: Very slimey
-  health: 2
+  health: 3
   damageOnHit: 1
   targetDetectionMask:
     serializedVersion: 2

@@ -11,6 +11,7 @@ public class WeaponStats : ScriptableObject
 	[Header("Weapon Stats")]
 	[SerializeField] private int damageOnHit = 10;              // How much damage the weapon deals on hit.
 	[SerializeField] private int durability = 100;              // How many hits this weapon can dish out. a.k.a. health
+	[SerializeField] private float attackRange = 0.5f;			// How far this weapon reaches. (Only applies to Melee weapons)
 	#endregion
 
 	#region Public Properties
@@ -19,5 +20,6 @@ public class WeaponStats : ScriptableObject
 
 	public int DamageOnHit { get => damageOnHit; set => damageOnHit = value; }
 	public int Durability { get => durability; set => durability = value; }
+	public float AttackRange { get => attackRange; set => attackRange = value; }
 	#endregion
 }
