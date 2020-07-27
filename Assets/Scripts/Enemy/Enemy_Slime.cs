@@ -78,6 +78,7 @@ public class Enemy_Slime : EnemyBehaviour, IDamageable
 	private IEnumerator OnDamageTakenEvent()
 	{
 		pathfinder.enabled = false;
+		rb2d.velocity = Vector2.zero;
 		rb2d.AddForce((transform.position - targetTransform.position).normalized * 500f * Time.deltaTime, ForceMode2D.Impulse);
 
 		yield return new WaitForSeconds(0.5f);

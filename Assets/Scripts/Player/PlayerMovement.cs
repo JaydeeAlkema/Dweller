@@ -25,9 +25,6 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private KeyCode runKey = KeyCode.LeftShift;        // Which key to press to start running.
 	[SerializeField] private Vector2 movementInputVector = default;     // Vector with the movement input variables.
 
-	[Header("Weapon Atributes")]
-	[SerializeField] private Transform weaponPivot = default;           // Reference to the current weapon pivot.
-
 	[Header("Components")]
 	[SerializeField] private Rigidbody2D rb2d = default;                // Reference to the Rigidbody2D component.
 	[SerializeField] private Animator anim = default;                   // Reference to the Animator component.
@@ -52,7 +49,6 @@ public class PlayerMovement : MonoBehaviour
 		if(GameManager.Instance.GameState == GameState.GameOver) return;
 
 		Move();
-		RotateWeaponPivotTowardsMouse();
 	}
 	#endregion
 
@@ -98,19 +94,6 @@ public class PlayerMovement : MonoBehaviour
 		else if(movementInputVector.x < 0f)
 			sprite.flipX = true;
 
-	}
-	#endregion
-
-	#region Weapon Rotation
-	/// <summary>
-	/// Rotates the WeaponPivot towards the mouse posiution on screen.
-	/// This is done to indicate to the player which way the character is aiming and thus can see what they could potentialy hit.
-	/// </summary>
-	private void RotateWeaponPivotTowardsMouse()
-	{
-		Vector3 dir = Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position);
-		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-		weaponPivot.rotation = Quaternion.AngleAxis(angle - 90f, Vector3.forward);
 	}
 	#endregion
 

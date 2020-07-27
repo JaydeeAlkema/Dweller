@@ -16,4 +16,4 @@ MonoBehaviour:
   description: Still does it's job, Barely.
   damageOnHit: 1
   durability: 100
-  attackRange: 0.35
+  attackRange: 0.5

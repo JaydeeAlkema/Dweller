@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6576181323400241532}
   - component: {fileID: 2096514841}
   m_Layer: 9
-  m_Name: WeaponPivot
+  m_Name: Weapon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,6 +48,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: fdb49ffd846d6204ea245a1d7472bdc2, type: 2}
   anim: {fileID: 7932476926510238407}
   attackPoint: {fileID: 1324138735916615281}
+  weaponRotPivot: {fileID: 6576181323400241532}
   targetLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -75,7 +76,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574288484026532462}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.661, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6576181323400241532}
@@ -329,7 +330,6 @@ MonoBehaviour:
   verticalAxis: Vertical
   runKey: 304
   movementInputVector: {x: 0, y: 0}
-  weaponPivot: {fileID: 6576181323400241532}
   rb2d: {fileID: 7338752091603514949}
   anim: {fileID: 8365230245528723502}
   sprite: {fileID: 7338752091886056520}

@@ -8,14 +8,14 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 {
 	#region Private Variables
 	[Header("Player Stats")]
-	[SerializeField] private PlayerStats stats = default;       // Reference to the Player Stats Scriptable Object. This holds all the stats for the player, this differs per character.
-	[SerializeField] private int currentHitPoints = default;    // Current amount of health.
+	[SerializeField] private PlayerStats stats = default;           // Reference to the Player Stats Scriptable Object. This holds all the stats for the player, this differs per character.
+	[SerializeField] private int currentHitPoints = default;        // Current amount of health.
 
 	[Header("Components")]
-	[SerializeField] private Rigidbody2D rb2d = default;        // Reference to the Rigidbody2D component.
-	[SerializeField] private Animator anim = default;           // Reference to the animator component.
-	[SerializeField] private PlayerMovement movement = default; // Reference to the PlayerMovement Component.
-	[SerializeField] private Collider2D playerCollider = default;
+	[SerializeField] private Rigidbody2D rb2d = default;            // Reference to the Rigidbody2D component.
+	[SerializeField] private Animator anim = default;               // Reference to the animator component.
+	[SerializeField] private PlayerMovement movement = default;     // Reference to the PlayerMovement Component.
+	[SerializeField] private Collider2D playerCollider = default;   // Reference to the Player collider to avoid double OnTriggerEnter events.
 	#endregion
 
 	#region Public Properties
@@ -32,9 +32,7 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 	{
 		if(playerCollider.IsTouching(collision))
 			if(collision.CompareTag("Enemy"))
-			{
 				StartCoroutine(OnEnemyCollision(collision));
-			}
 	}
 	#endregion
 
@@ -50,6 +48,11 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 	}
 	#endregion
 
+	/// <summary>
+	/// Everything that should happen upon collision with an enemy object.
+	/// </summary>
+	/// <param name="collision"></param>
+	/// <returns></returns>
 	private IEnumerator OnEnemyCollision(Collider2D collision)
 	{
 		movement.enabled = false;
