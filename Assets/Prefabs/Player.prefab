@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50024539af4a35d418f51bd614be7806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: fdb49ffd846d6204ea245a1d7472bdc2, type: 2}
+  stats: {fileID: 11400000, guid: 5ca64217ac5d54a4499f9bcd06d9612a, type: 2}
   anim: {fileID: 7932476926510238407}
+  spriteRenderer: {fileID: 7338752093256950770}
   attackPoint: {fileID: 1324138735916615281}
   weaponRotPivot: {fileID: 6576181323400241532}
   targetLayer:
@@ -152,7 +153,7 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Time: 0.1
   m_Parameters:
     serializedVersion: 3

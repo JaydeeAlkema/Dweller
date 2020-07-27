@@ -35535,12 +35535,6 @@ Transform:
   m_Father: {fileID: 1185712727}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1166796951 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6576181323400241532, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
-    type: 3}
-  m_PrefabInstance: {fileID: 7338752093173634665}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1169270327 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4695371258440476630, guid: f13bc30db78564248a82868afcf66dc7,
@@ -38829,19 +38823,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 993233540}
     m_Modifications:
     - target: {fileID: 2096514841, guid: 33cd2616e9f2fdd44a9ae063fa3125c4, type: 3}
-      propertyPath: weaponRotPivot
+      propertyPath: stats
       value: 
-      objectReference: {fileID: 1166796951}
-    - target: {fileID: 1910533413591664134, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
-        type: 3}
-      propertyPath: m_Name
-      value: Weapon
-      objectReference: {fileID: 0}
-    - target: {fileID: 4101742193671678473, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 2
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: fdb49ffd846d6204ea245a1d7472bdc2,
+        type: 2}
     - target: {fileID: 7338752091603514944, guid: 33cd2616e9f2fdd44a9ae063fa3125c4,
         type: 3}
       propertyPath: m_Name

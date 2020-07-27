@@ -5,6 +5,7 @@ public class WeaponStats : ScriptableObject
 {
 	#region Private Variables
 	[Header("Weapon Name and Description")]
+	[SerializeField] private Sprite sprite = default;			// Sprite of the Weapon.
 	[SerializeField] private new string name = default;         // Name of the Weapon.
 	[SerializeField] private string description = default;      // Description of the Weapon.
 
@@ -15,6 +16,7 @@ public class WeaponStats : ScriptableObject
 	#endregion
 
 	#region Public Properties
+	public Sprite Sprite { get => sprite; set => sprite = value; }
 	public string Name { get => name; set => name = value; }
 	public string Description { get => description; set => description = value; }
 

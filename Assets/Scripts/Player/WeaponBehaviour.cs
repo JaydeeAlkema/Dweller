@@ -8,13 +8,20 @@ public class WeaponBehaviour : MonoBehaviour
 	#region Private Variables
 	[Header("Weapon Properties")]
 	[SerializeField] private WeaponStats stats = default;           // Reference to the Stats Scriptable Object.
+	[Space]
 	[SerializeField] private Animator anim = default;               // Reference to the animator component.
+	[SerializeField] private SpriteRenderer spriteRenderer = default;   // Reference to the SpriteRenderer of the Weapon.
 	[SerializeField] private Transform attackPoint = default;       // From which point we check for entities within the attack range.
 	[SerializeField] private Transform weaponRotPivot = default;    // Reference to the weapon rotation pivot.
 	[SerializeField] private LayerMask targetLayer = default;       // What layers to check for entities to damage.
 	#endregion
 
 	#region Monobehaviour Callbacks
+	private void Start()
+	{
+		spriteRenderer.sprite = stats.Sprite;
+	}
+
 	private void Update()
 	{
 		RotateWeaponPivotTowardsMouse();

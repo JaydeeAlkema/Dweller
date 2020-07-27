@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2077ee50ae2aa14419b42ec60f07a358, type: 3}
-  m_Name: RustySword
+  m_Name: Weapon_Sword_Royal
   m_EditorClassIdentifier: 
-  name: 'Rusty Sword '
-  description: Still does it's job, Barely.
-  damageOnHit: 1
-  durability: 100
-  attackRange: 0.5
+  sprite: {fileID: 21300000, guid: 79b2aa53cffe0644b9cce33a663d78b9, type: 3}
+  name: Sword of Royalty
+  description: The most exquisite weapon there is, hmmyes
+  damageOnHit: 10
+  durability: 500
+  attackRange: 0.75
