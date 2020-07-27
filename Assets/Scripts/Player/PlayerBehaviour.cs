@@ -28,11 +28,6 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 		currentHitPoints = stats.HitPoints;
 	}
 
-	private void Update()
-	{
-
-	}
-
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if(playerCollider.IsTouching(collision))
@@ -48,10 +43,12 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 	{
 		anim.SetTrigger("Hit");
 		currentHitPoints -= value;
+		if(currentHitPoints <= 0)
+			GameManager.Instance.GameOverEvent();
+
 		UIManager.Instance.UpdatePlayerHealthUI(stats.HitPoints, currentHitPoints);
 	}
 	#endregion
-
 
 	private IEnumerator OnEnemyCollision(Collider2D collision)
 	{

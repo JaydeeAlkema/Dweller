@@ -85,6 +85,9 @@ public class EnemyBehaviour : MonoBehaviour
 	/// </summary>
 	protected virtual void FollowTargetWhenInRange()
 	{
+		// Return when the game is over.
+		if(GameManager.Instance.GameState == GameState.GameOver) return;
+
 		if(state == EnemyState.Idle)
 		{
 			if(CanFollowTarget())
@@ -103,6 +106,9 @@ public class EnemyBehaviour : MonoBehaviour
 	/// </summary>
 	protected virtual void SetAnimation()
 	{
+		// Return when the game is over.
+		if(GameManager.Instance.GameState == GameState.GameOver) return;
+
 		anim.SetInteger("State", (int)state);
 	}
 
@@ -111,6 +117,9 @@ public class EnemyBehaviour : MonoBehaviour
 	/// </summary>
 	protected void FlipSprite()
 	{
+		// Return when the game is over.
+		if(GameManager.Instance.GameState == GameState.GameOver) return;
+
 		// Get direction. Flip sprite accordingly.
 		Vector2 direction = transform.position - targetTransform.position;
 		spriteRenderer.flipX = direction.x < 0 ? false : true;

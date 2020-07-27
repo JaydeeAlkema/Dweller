@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Elf_F
   m_EditorClassIdentifier: 
   name: Female Elf
-  description: An Elf, but female.
-  hitPoints: 10
+  description: A female Elf
+  hitPoints: 1

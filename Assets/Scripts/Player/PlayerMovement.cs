@@ -37,6 +37,9 @@ public class PlayerMovement : MonoBehaviour
 	#region Monobehaviour Callbacks
 	private void Update()
 	{
+		// Return when the game is over.
+		if(GameManager.Instance.GameState == GameState.GameOver) return;
+
 		ProcessPlayerInput();
 		FlipSprite();
 		SetPlayerState();
@@ -45,6 +48,9 @@ public class PlayerMovement : MonoBehaviour
 
 	private void FixedUpdate()
 	{
+		// Return when the game is over.
+		if(GameManager.Instance.GameState == GameState.GameOver) return;
+
 		Move();
 		RotateWeaponPivotTowardsMouse();
 	}
