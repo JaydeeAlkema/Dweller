@@ -8,7 +8,7 @@ public class WeaponBehaviour : MonoBehaviour
 {
 	#region Private Variables
 	[Header("Weapon Properties")]
-	[SerializeField] private WeaponStats stats = default;                   // Reference to the Stats Scriptable Object.
+	[SerializeField] private Item weapon = default;                   // Reference to the Item Scriptable Object.
 	[Space]
 	[SerializeField] private Animator anim = default;                       // Reference to the animator component.
 	[SerializeField] private SpriteRenderer spriteRenderer = default;       // Reference to the SpriteRenderer of the Weapon.
@@ -22,7 +22,7 @@ public class WeaponBehaviour : MonoBehaviour
 	#region Monobehaviour Callbacks
 	private void Start()
 	{
-		spriteRenderer.sprite = stats.Sprite;
+		spriteRenderer.sprite = weapon.icon;
 	}
 
 	private void Update()
@@ -44,11 +44,11 @@ public class WeaponBehaviour : MonoBehaviour
 	/// </summary>
 	private void HitEntitiesWithinAttackRange()
 	{
-		Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, stats.AttackRange, targetLayer);
+		Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, weapon.weaponStats.attackRange, targetLayer);
 
 		foreach(Collider2D entity in hitEntities)
 		{
-			entity.GetComponent<IDamageable>()?.Damage(stats.DamageOnHit);
+			entity.GetComponent<IDamageable>()?.Damage(weapon.weaponStats.damageOnHit);
 		}
 	}
 	#endregion
@@ -78,6 +78,6 @@ public class WeaponBehaviour : MonoBehaviour
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(attackPoint.position, stats.AttackRange);
+		Gizmos.DrawWireSphere(attackPoint.position, weapon.weaponStats.attackRange);
 	}
 }

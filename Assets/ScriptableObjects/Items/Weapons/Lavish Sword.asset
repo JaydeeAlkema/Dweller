@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6865b12f9e8ca3740a70a874fa6d8c79, type: 3}
+  m_Name: Lavish Sword
+  m_EditorClassIdentifier: 
+  name: Lavish Sword
+  icon: {fileID: 21300000, guid: 79b2aa53cffe0644b9cce33a663d78b9, type: 3}
+  isDefaultItem: 0
+  weaponStats: {fileID: 11400000, guid: 2802124ab445d12479342b5286b5630c, type: 2}
