@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// This is most likely a temp class. Just to test out 
@@ -7,13 +8,15 @@ public class WeaponBehaviour : MonoBehaviour
 {
 	#region Private Variables
 	[Header("Weapon Properties")]
-	[SerializeField] private WeaponStats stats = default;           // Reference to the Stats Scriptable Object.
+	[SerializeField] private WeaponStats stats = default;                   // Reference to the Stats Scriptable Object.
 	[Space]
-	[SerializeField] private Animator anim = default;               // Reference to the animator component.
-	[SerializeField] private SpriteRenderer spriteRenderer = default;   // Reference to the SpriteRenderer of the Weapon.
-	[SerializeField] private Transform attackPoint = default;       // From which point we check for entities within the attack range.
-	[SerializeField] private Transform weaponRotPivot = default;    // Reference to the weapon rotation pivot.
-	[SerializeField] private LayerMask targetLayer = default;       // What layers to check for entities to damage.
+	[SerializeField] private Animator anim = default;                       // Reference to the animator component.
+	[SerializeField] private SpriteRenderer spriteRenderer = default;       // Reference to the SpriteRenderer of the Weapon.
+	[SerializeField] private Transform attackPoint = default;               // From which point we check for entities within the attack range.
+	[SerializeField] private Transform weaponRotPivot = default;            // Reference to the weapon rotation pivot.
+	[SerializeField] private LayerMask targetLayer = default;               // What layers to check for entities to damage.
+
+	private bool canAttack = true;
 	#endregion
 
 	#region Monobehaviour Callbacks
@@ -24,14 +27,17 @@ public class WeaponBehaviour : MonoBehaviour
 
 	private void Update()
 	{
-		RotateWeaponPivotTowardsMouse();
-		if(Input.GetMouseButtonDown(0))
+		if(canAttack) RotateWeaponPivotTowardsMouse();
+		if(Input.GetMouseButtonDown(0) && canAttack)
 		{
+			StartCoroutine(WeaponAttackCooldown());
 			anim.SetTrigger("Strike_0");
 			HitEntitiesWithinAttackRange();
 		}
 	}
+	#endregion
 
+	#region Private Voids
 	/// <summary>
 	/// Get's all the entities from the same layer that are within the attack range.
 	/// Calls the IDamageable Damage function if it has the interface implemented.
@@ -44,6 +50,15 @@ public class WeaponBehaviour : MonoBehaviour
 		{
 			entity.GetComponent<IDamageable>()?.Damage(stats.DamageOnHit);
 		}
+	}
+	#endregion
+
+	#region Private IEnumerators
+	private IEnumerator WeaponAttackCooldown()
+	{
+		canAttack = false;
+		yield return new WaitForSeconds(0.5f);
+		canAttack = true;
 	}
 	#endregion
 
