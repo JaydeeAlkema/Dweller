@@ -5,6 +5,7 @@ public class Item : ScriptableObject
 {
 	[Header("Base Item Properties")]
 	public new string name = "New Item";
+	public string description = "Item Info";
 	public Sprite icon = null;
 	public bool isDefaultItem = false;
 

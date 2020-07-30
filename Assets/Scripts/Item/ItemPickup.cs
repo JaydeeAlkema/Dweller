@@ -9,12 +9,14 @@ public class ItemPickup : Interactable
 	[SerializeField] private Item item;
 
 	Inventory inventory = null;
+	UIManager uiManager = null;
 	#endregion
 
 	#region Monobehaviour Callbacks
 	private void Start()
 	{
 		inventory = Inventory.instance;
+		uiManager = UIManager.Instance;
 	}
 
 	private void Update()
@@ -25,6 +27,16 @@ public class ItemPickup : Interactable
 			else
 				Debug.Log("Too far away to interact with: " + item.name);
 	}
+
+	private void OnMouseOver()
+	{
+		uiManager.ShowFloatingInfoPanel(item);
+	}
+
+	private void OnMouseExit()
+	{
+		uiManager.HideFloatingInfoPanel();
+	}
 	#endregion
 
 	/// <summary>
@@ -33,7 +45,6 @@ public class ItemPickup : Interactable
 	protected override void Interact()
 	{
 		base.Interact();
-
 		PickUp();
 	}
 
@@ -42,6 +53,7 @@ public class ItemPickup : Interactable
 	/// </summary>
 	private void PickUp()
 	{
+		uiManager.HideFloatingInfoPanel();
 		Debug.Log("Picking up " + item.name);
 		bool wasPickedUp = inventory.Add(item);
 

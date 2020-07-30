@@ -6,9 +6,9 @@
 public class InventoryUI : MonoBehaviour
 {
 	#region Private Variables
-	[SerializeField] private Transform inventoryTransform = null;		// Reference to the entire Inventory UI Transform.
-	[SerializeField] private Transform itemsParent = null;				// Parent Transform of all the inventory slots.
-	[SerializeField] private KeyCode inventoryShowKey = KeyCode.I;		// Which key to press to show the inventory UI.
+	[SerializeField] private Transform inventoryTransform = null;       // Reference to the entire Inventory UI Transform.
+	[SerializeField] private Transform itemsParent = null;              // Parent Transform of all the inventory slots.
+	[SerializeField] private KeyCode inventoryShowKey = KeyCode.I;      // Which key to press to show the inventory UI.
 
 	private Inventory inventory = null;
 	private InventorySlot[] slots = null;

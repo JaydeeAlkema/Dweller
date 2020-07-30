@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Threading;
+using UnityEditorInternal;
 using UnityEngine;
 
 /// <summary>
@@ -16,6 +18,8 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 	[SerializeField] private Animator anim = default;               // Reference to the animator component.
 	[SerializeField] private PlayerMovement movement = default;     // Reference to the PlayerMovement Component.
 	[SerializeField] private Collider2D playerCollider = default;   // Reference to the Player collider to avoid double OnTriggerEnter events.
+
+	private SpriteRenderer spriteRenderer = default;
 	#endregion
 
 	#region Public Properties
@@ -60,5 +64,17 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 		Damage(collision.GetComponent<EnemyBehaviour>().EnemyStats.DamageOnHit);
 		yield return new WaitForSeconds(0.5f);
 		movement.enabled = true;
+	}
+
+	private IEnumerator SpriteBlinkOnHit()
+	{
+		int count = 0;
+		while(count < 10)
+		{
+			spriteRenderer.enabled = false;
+			yield return new WaitForSeconds(0.25f);
+			spriteRenderer.enabled = true;
+			count++;
+		}
 	}
 }

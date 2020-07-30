@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Lavish Sword
   m_EditorClassIdentifier: 
   name: Lavish Sword
+  description: This sword once belonged to the feared crazed king! But now it belongs
+    to you...
   icon: {fileID: 21300000, guid: 79b2aa53cffe0644b9cce33a663d78b9, type: 3}
   isDefaultItem: 0
   weaponStats: {fileID: 11400000, guid: 2802124ab445d12479342b5286b5630c, type: 2}
