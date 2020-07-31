@@ -18,8 +18,7 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 	[SerializeField] private Animator anim = default;               // Reference to the animator component.
 	[SerializeField] private PlayerMovement movement = default;     // Reference to the PlayerMovement Component.
 	[SerializeField] private Collider2D playerCollider = default;   // Reference to the Player collider to avoid double OnTriggerEnter events.
-
-	private SpriteRenderer spriteRenderer = default;
+	[SerializeField] private SpriteRenderer spriteRenderer = default;   // Reference to the Sprite Renderer.
 	#endregion
 
 	#region Public Properties
@@ -62,6 +61,7 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 		movement.enabled = false;
 		rb2d.AddForce((transform.position - collision.transform.position).normalized * 200f * Time.deltaTime, ForceMode2D.Impulse);
 		Damage(collision.GetComponent<EnemyBehaviour>().EnemyStats.DamageOnHit);
+		StartCoroutine(SpriteBlinkOnHit());
 		yield return new WaitForSeconds(0.5f);
 		movement.enabled = true;
 	}
@@ -69,11 +69,12 @@ public class PlayerBehaviour : MonoBehaviour, IDamageable
 	private IEnumerator SpriteBlinkOnHit()
 	{
 		int count = 0;
-		while(count < 10)
+		while(count < 3)
 		{
 			spriteRenderer.enabled = false;
-			yield return new WaitForSeconds(0.25f);
+			yield return new WaitForSeconds(0.1f);
 			spriteRenderer.enabled = true;
+			yield return new WaitForSeconds(0.1f);
 			count++;
 		}
 	}
