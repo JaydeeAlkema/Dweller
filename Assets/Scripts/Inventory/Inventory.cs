@@ -32,7 +32,7 @@ public class Inventory : MonoBehaviour
 	/// <summary>
 	/// Add an item to the Items list.
 	/// </summary>
-	/// <param name="item"></param>
+	/// <param name="item"> Which Item to add to the list. </param>
 	public bool Add(Item item)
 	{
 		if(!item.isDefaultItem)
@@ -54,7 +54,7 @@ public class Inventory : MonoBehaviour
 	/// 
 	/// Removes and item from the Items list.
 	/// </summary>
-	/// <param name="item"></param>
+	/// <param name="item"> Which Item to remove from the list. </param>
 	public void Remove(Item item)
 	{
 		items.Remove(item);

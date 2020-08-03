@@ -61,7 +61,7 @@ public class Enemy_Slime : EnemyBehaviour, IDamageable
 	/// <summary>
 	/// IDamageable Interface Damage Implementation.
 	/// </summary>
-	/// <param name="value"></param>
+	/// <param name="value"> How much Damage should be applied. </param>
 	public void Damage(int value)
 	{
 		currentHealth -= value;

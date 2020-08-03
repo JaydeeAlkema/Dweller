@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 153474193}
   - component: {fileID: 153474194}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: ObstacleCollision
   m_TagString: Untagged
   m_Icon: {fileID: 0}

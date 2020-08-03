@@ -15,3 +15,9 @@ MonoBehaviour:
   name: Female Elf
   description: A female Elf
   hitPoints: 6
+  attack: 9
+  defense: 6
+  speed: 12
+  evasion: 15
+  accuracy: 14
+  critical: 7

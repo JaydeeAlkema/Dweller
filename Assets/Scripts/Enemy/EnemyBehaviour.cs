@@ -131,7 +131,7 @@ public class EnemyBehaviour : MonoBehaviour
 	/// Checks of the enemy can see the target with the given tag.
 	/// Also Checks if there are no obstacle in the way, Avoiding the problem where the enemy detects the target through walls etc.
 	/// </summary>
-	/// <param name="tag"></param>
+	/// <param name="tag"> Which tag to check for. </param>
 	/// <returns></returns>
 	private bool CanSeeTargetWithTag(string tag)
 	{

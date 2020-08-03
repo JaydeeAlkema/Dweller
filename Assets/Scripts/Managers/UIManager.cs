@@ -91,6 +91,7 @@ public class UIManager : MonoBehaviour
 	/// Shows the Floating Info Panel and clamps it's position to the mouse position.
 	/// This info panel shows all the necessary information of the item that's currently under the cursor.
 	/// </summary>
+	/// <param name="item"> What item to get the properties from to display. </param>
 	public void ShowFloatingInfoPanel(Item item)
 	{
 		Cursor.visible = false;

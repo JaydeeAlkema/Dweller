@@ -19,10 +19,14 @@ public class WeaponBehaviour : MonoBehaviour
 	private bool canAttack = true;
 	#endregion
 
+	#region Public Properties
+	public Item Weapon { get => weapon; set => weapon = value; }
+	#endregion
+
 	#region Monobehaviour Callbacks
 	private void Start()
 	{
-		spriteRenderer.sprite = weapon.icon;
+		spriteRenderer.sprite = Weapon.icon;
 	}
 
 	private void Update()
@@ -44,11 +48,25 @@ public class WeaponBehaviour : MonoBehaviour
 	/// </summary>
 	private void HitEntitiesWithinAttackRange()
 	{
-		Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, weapon.weaponStats.attackRange, targetLayer);
+		Collider2D[] hitEntities = Physics2D.OverlapCircleAll(attackPoint.position, Weapon.weaponStats.attackRange, targetLayer);
 
 		foreach(Collider2D entity in hitEntities)
 		{
-			entity.GetComponent<IDamageable>()?.Damage(weapon.weaponStats.damageOnHit);
+			Debug.Log("Hit: " + entity.name);
+			int critChance = Random.Range(0, 100);
+			int damage = Weapon.weaponStats.damageOnHit;
+
+			if(critChance < Weapon.weaponStats.Critical)
+			{
+				damage *= 2;
+				FloatingDamageNumberSpawner.Instance.InstantiateFloatingDamageNumberAtPos(entity.transform.position, damage.ToString(), true);
+			}
+			else
+			{
+				FloatingDamageNumberSpawner.Instance.InstantiateFloatingDamageNumberAtPos(entity.transform.position, damage.ToString(), false);
+			}
+
+			entity.GetComponent<IDamageable>()?.Damage(damage);
 		}
 	}
 	#endregion
@@ -78,6 +96,6 @@ public class WeaponBehaviour : MonoBehaviour
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
-		Gizmos.DrawWireSphere(attackPoint.position, weapon.weaponStats.attackRange);
+		Gizmos.DrawWireSphere(attackPoint.position, Weapon.weaponStats.attackRange);
 	}
 }
