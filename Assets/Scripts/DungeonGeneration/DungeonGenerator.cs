@@ -1,7 +1,11 @@
-﻿using System.Collections;
+﻿using Pathfinding;
+using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Management.Instrumentation;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// The Dungeon Generator class is responsible for generatin the entire level a.k.a. Dungeon.
@@ -22,6 +26,7 @@ public class DungeonGenerator : MonoBehaviour
 	[SerializeField] private List<Room> Rooms = new List<Room>();       // List with all the rooms in the dungeon.
 
 	private int coordinateOffset = 1;   // The offset between tiles. a.k.a. the tile width and height.
+	private DateTime startTime;
 	#endregion
 
 	#region Monobehaviour Callbacks
@@ -39,8 +44,13 @@ public class DungeonGenerator : MonoBehaviour
 	public void GenerateDungeon()
 	{
 		Random.InitState(seed.GetHashCode());
+
+		startTime = DateTime.Now;
+		Debug.Log("Generating Dungeon");
 		GenerateRooms();
 		// Generate something else...
+
+		Debug.Log("Dungeon Generation Took: " + (DateTime.Now - startTime).Milliseconds + "ms" + " | " + (DateTime.Now - startTime).Seconds + "sec");
 	}
 
 	/// <summary>
@@ -58,6 +68,8 @@ public class DungeonGenerator : MonoBehaviour
 			int roomStartCoordinateY = Random.Range(0, mapSize.y);
 			int roomSizeX = Random.Range(minRoomSize.x, maxRoomSize.x);
 			int roomSizeY = Random.Range(minRoomSize.y, maxRoomSize.y);
+
+			Rooms.Add(room);
 
 			for(int x = 0; x < roomSizeX; x++)
 			{

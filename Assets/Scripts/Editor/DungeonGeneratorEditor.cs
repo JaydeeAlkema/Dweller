@@ -6,15 +6,17 @@ using UnityEditor;
 [CustomEditor(typeof(DungeonGenerator))]
 public class DungeonGeneratorEditor : Editor
 {
-	public override void OnInspectorGUI()
-	{
-		base.OnInspectorGUI();
+	// Temp disable. Will return to this in the future.
 
-		DungeonGenerator dungeonGenerator = (DungeonGenerator)target;
-		if(GUILayout.Button("Generate Dungeon"))
-		{
-			// Cleanup the rooms in the scene.
-			dungeonGenerator.GenerateDungeon();
-		}
-	}
+	//public override void OnInspectorGUI()
+	//{
+	//	base.OnInspectorGUI();
+
+	//	DungeonGenerator dungeonGenerator = (DungeonGenerator)target;
+	//	if(GUILayout.Button("Generate Dungeon"))
+	//	{
+	//		// Cleanup the rooms in the scene.
+	//		dungeonGenerator.GenerateDungeon();
+	//	}
+	//}
 }
