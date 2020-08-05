@@ -382,10 +382,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e6a7a9dcf0b7d418f14e867d80deee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: Jaydee
+  seed: merel
   theme: 0
   mapSize: {x: 100, y: 100}
-  roomCount: 10
+  roomCount: 20
   minRoomSize: {x: 10, y: 10}
   maxRoomSize: {x: 20, y: 20}
   tileGroundSprite: {fileID: 21300000, guid: f91233df3854ac641b53893599475007, type: 3}
