@@ -105,6 +105,15 @@ public class DungeonGenerator : MonoBehaviour
 			}
 		}
 	}
+
+	/// <summary>
+	/// This function makes it so each room makes a path to the next room in the list.
+	/// For now This is bruteforced, but later on a different technique might get used.
+	/// </summary>
+	private void GeneratePathways()
+	{
+
+	}
 	#endregion
 }
 
