@@ -24,6 +24,7 @@ public class DungeonGenerator : MonoBehaviour
 	[SerializeField] private Sprite tileGroundSprite = null;            // Tile Ground Sprite.
 
 	[SerializeField] private List<Room> Rooms = new List<Room>();       // List with all the rooms in the dungeon.
+	[SerializeField] private List<Tile> tiles = new List<Tile>();       // List with all the tiles in the dungeon.
 
 	private int coordinateOffset = 1;   // The offset between tiles. a.k.a. the tile width and height.
 	private DateTime startTime;
@@ -75,7 +76,15 @@ public class DungeonGenerator : MonoBehaviour
 			{
 				for(int y = 0; y < roomSizeY; y++)
 				{
-					GameObject newTileGO = new GameObject { name = "Tile [" + (x + roomStartCoordinateX) * coordinateOffset + "]" + " " + "[" + (y + roomStartCoordinateY) * coordinateOffset + "]" };
+					int xPos = x + roomStartCoordinateX;
+					int yPos = y + roomStartCoordinateY;
+
+					// This prevents a duplicate tile being created.
+					for(int t = 0; t < tiles.Count; t++)
+						if(tiles[t].Coordinates == new Vector2Int(xPos, yPos))
+							return;
+
+					GameObject newTileGO = new GameObject { name = "Tile [" + xPos * coordinateOffset + "]" + " " + "[" + yPos * coordinateOffset + "]" };
 					newTileGO.transform.SetParent(newRoomGO.transform);
 
 					newTileGO.AddComponent<Tile>();
@@ -84,13 +93,14 @@ public class DungeonGenerator : MonoBehaviour
 					Tile tile = newTileGO.GetComponent<Tile>();
 					SpriteRenderer spriteRenderer = newTileGO.GetComponent<SpriteRenderer>();
 
-					tile.Coordinates = new Vector2Int((x + roomStartCoordinateX) * coordinateOffset, (y + roomStartCoordinateY) * coordinateOffset);
+					tile.Coordinates = new Vector2Int(xPos * coordinateOffset, yPos * coordinateOffset);
 
 					tile.Sprite = tileGroundSprite;
 					spriteRenderer.sprite = tile.Sprite;
 
 					newTileGO.transform.position = (Vector2)tile.Coordinates;
 					room.Tiles.Add(tile);
+					tiles.Add(tile);
 				}
 			}
 		}
