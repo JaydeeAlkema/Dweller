@@ -18,9 +18,14 @@ public class DungeonGenerator : MonoBehaviour
 	[Space]
 	[SerializeField] private DungeonTheme theme = DungeonTheme.Demonic; // The theme of the dungeon. Since each dungeon is an entire level, we can define the theme high up.
 	[SerializeField] private Vector2Int mapSize = Vector2Int.zero;      // The size of the maps. How many tiles wide and high.
-	[SerializeField] private int roomCount = 0;                         // How many rooms in the maps need to be made. The rooms are generated in a way they can overlap to generate unique looking rooms.
+	[Space]
 	[SerializeField] private Vector2Int minRoomSize = Vector2Int.zero;  // Min Room size.
 	[SerializeField] private Vector2Int maxRoomSize = Vector2Int.zero;  // Max Room size.
+	[Space]
+	[SerializeField] private int minPathwayCount = 15;                  // Minimum amount of pathways that will be generated.
+	[SerializeField] private int maxPathwayCount = 30;                  // Maximum amount of pathways that will be generated.
+	[SerializeField] private int minPathwayLength = 10;                 // Minimum length of the pathway before making a turn.
+	[SerializeField] private int maxPathwayLength = 20;                 // Maximum length of the pathway before making a turn.
 	[SerializeField] private Sprite tileGroundSprite = null;            // Tile Ground Sprite.
 
 	[SerializeField] private List<Room> Rooms = new List<Room>();       // List with all the rooms in the dungeon.
@@ -28,6 +33,10 @@ public class DungeonGenerator : MonoBehaviour
 
 	private int coordinateOffset = 1;   // The offset between tiles. a.k.a. the tile width and height.
 	private DateTime startTime;
+
+	private int roomIndex = 0;
+	private int pathwayIndex = 0;
+	private int tileIndex = 0;
 	#endregion
 
 	#region Monobehaviour Callbacks
@@ -48,60 +57,39 @@ public class DungeonGenerator : MonoBehaviour
 
 		startTime = DateTime.Now;
 		Debug.Log("Generating Dungeon");
-		GenerateRooms();
+		GeneratePathways();
 		// Generate something else...
 
 		Debug.Log("Dungeon Generation Took: " + (DateTime.Now - startTime).Milliseconds + "ms" + " | " + (DateTime.Now - startTime).Seconds + "sec");
 	}
 
 	/// <summary>
-	/// The Generate Dungeon Function generates the rooms with the necessary tiles.
+	/// Generates a room at the givin coordinates with the givin min/max roomsize.
 	/// </summary>
-	private void GenerateRooms()
+	/// <param name="coordinates"> Room Starting Coordinates. </param>
+	private void GenerateRoom(Vector2Int coordinates)
 	{
-		for(int i = 0; i < roomCount; i++)
+		roomIndex++;
+		GameObject newRoomGO = new GameObject { name = "Room [" + roomIndex + "]" };
+		newRoomGO.transform.position = new Vector3(coordinates.x, coordinates.y, 0);
+		newRoomGO.AddComponent<Room>();
+		Room room = newRoomGO.GetComponent<Room>();
+
+		int roomSizeX = Random.Range(minRoomSize.x, maxRoomSize.x);
+		int roomSizeY = Random.Range(minRoomSize.y, maxRoomSize.y);
+
+		Rooms.Add(room);
+
+		for(int x = 0; x < roomSizeX; x++)
 		{
-			GameObject newRoomGO = new GameObject { name = "Room [" + i + "]" };
-			newRoomGO.AddComponent<Room>();
-			Room room = newRoomGO.GetComponent<Room>();
-
-			int roomStartCoordinateX = Random.Range(0, mapSize.x);
-			int roomStartCoordinateY = Random.Range(0, mapSize.y);
-			int roomSizeX = Random.Range(minRoomSize.x, maxRoomSize.x);
-			int roomSizeY = Random.Range(minRoomSize.y, maxRoomSize.y);
-
-			Rooms.Add(room);
-
-			for(int x = 0; x < roomSizeX; x++)
+			for(int y = 0; y < roomSizeY; y++)
 			{
-				for(int y = 0; y < roomSizeY; y++)
-				{
-					int xPos = x + roomStartCoordinateX;
-					int yPos = y + roomStartCoordinateY;
+				// This prevents a duplicate tile being created.
+				//for(int t = 0; t < tiles.Count; t++)
+				//	if(tiles[t].Coordinates == new Vector2Int(coordinates.x + x, coordinates.y + y))
+				//		return;
 
-					// This prevents a duplicate tile being created.
-					for(int t = 0; t < tiles.Count; t++)
-						if(tiles[t].Coordinates == new Vector2Int(xPos, yPos))
-							return;
-
-					GameObject newTileGO = new GameObject { name = "Tile [" + xPos * coordinateOffset + "]" + " " + "[" + yPos * coordinateOffset + "]" };
-					newTileGO.transform.SetParent(newRoomGO.transform);
-
-					newTileGO.AddComponent<Tile>();
-					newTileGO.AddComponent<SpriteRenderer>();
-
-					Tile tile = newTileGO.GetComponent<Tile>();
-					SpriteRenderer spriteRenderer = newTileGO.GetComponent<SpriteRenderer>();
-
-					tile.Coordinates = new Vector2Int(xPos * coordinateOffset, yPos * coordinateOffset);
-
-					tile.Sprite = tileGroundSprite;
-					spriteRenderer.sprite = tile.Sprite;
-
-					newTileGO.transform.position = (Vector2)tile.Coordinates;
-					room.Tiles.Add(tile);
-					tiles.Add(tile);
-				}
+				GenerateTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x + x, coordinates.y + y), room);
 			}
 		}
 	}
@@ -112,7 +100,99 @@ public class DungeonGenerator : MonoBehaviour
 	/// </summary>
 	private void GeneratePathways()
 	{
+		// pick a random amount of pathways that need to be generated.
+		int pathwayAmount = Random.Range(minPathwayCount, maxPathwayCount);
+		// Store the previous pathway direction so we dont get overlapping pathways.
+		int previousPathwayDir = 1;
+		Vector2Int coordinates = new Vector2Int();
+		Vector2Int coordinatesDir = new Vector2Int();
+		for(int i = 0; i < pathwayAmount; i++)
+		{
+			// Decide which way the dungeon should start going in.
+			// 1: Left, 2: Up, 3: Right, 4: Down.
+			// Keep generating a direction as long as it's the same as the previous one.
+			int pathwayStartingDirection = Random.Range(1, 5);
+			while(pathwayStartingDirection == 1 && previousPathwayDir == 3 || pathwayStartingDirection == 3 && previousPathwayDir == 1 ||
+				  pathwayStartingDirection == 2 && previousPathwayDir == 4 || pathwayStartingDirection == 4 && previousPathwayDir == 2)
+			{
+				pathwayStartingDirection = Random.Range(1, 5);
+			}
 
+			Debug.Log(previousPathwayDir + " " + pathwayStartingDirection);
+
+			// Set coordinates direction.
+			switch(pathwayStartingDirection)
+			{
+				case 1:
+					coordinatesDir = new Vector2Int(-1, 0);
+					break;
+
+				case 2:
+					coordinatesDir = new Vector2Int(0, 1);
+					break;
+
+				case 3:
+					coordinatesDir = new Vector2Int(1, 0);
+					break;
+
+				case 4:
+					coordinatesDir = new Vector2Int(0, -1);
+					break;
+
+				default:
+					break;
+			}
+
+			// Store current direction into the previous direction variable.
+			previousPathwayDir = pathwayStartingDirection;
+
+			// Decide how long the pathway should be before generating a new one.
+			int pathwayLength = Random.Range(minPathwayLength, maxPathwayLength);
+
+			// Generate the path for the generated length
+			for(int j = 0; j < pathwayLength; j++)
+			{
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j), coordinates.y + (coordinatesDir.y * j)), null);
+			}
+
+			// Create a room at the end of each pathway.
+			GenerateRoom(coordinates);
+			coordinates.x += coordinatesDir.x * pathwayLength;
+			coordinates.y += coordinatesDir.y * pathwayLength;
+
+			pathwayIndex++;
+		}
+		// Generate one final room for the final pathway to fix the dead end.
+		GenerateRoom(coordinates);
+	}
+
+	/// <summary>
+	/// Generates a tile with the given name, coordinates and parrentroom (if given)
+	/// </summary>
+	/// <param name="tileName"> The name of the tile. </param>
+	/// <param name="coordinates"> The coordinates of the tile. </param>
+	/// <param name="parentRoom"> The parentRoom of the tile. (This is not necessary!). </param>
+	private void GenerateTile(string tileName, Vector2Int coordinates, Room parentRoom)
+	{
+		GameObject newTileGO = new GameObject { name = tileName };
+
+		newTileGO.AddComponent<Tile>();
+		newTileGO.AddComponent<SpriteRenderer>();
+
+		Tile tile = newTileGO.GetComponent<Tile>();
+		SpriteRenderer spriteRenderer = newTileGO.GetComponent<SpriteRenderer>();
+
+		tile.Coordinates = new Vector2Int(coordinates.x, coordinates.y);
+		tile.Sprite = tileGroundSprite;
+		spriteRenderer.sprite = tile.Sprite;
+
+		newTileGO.transform.position = (Vector2)tile.Coordinates;
+		if(parentRoom)
+		{
+			parentRoom.Tiles.Add(tile);
+			newTileGO.transform.parent = parentRoom.transform;
+		}
+		tiles.Add(tile);
 	}
 	#endregion
 }
