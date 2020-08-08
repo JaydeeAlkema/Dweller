@@ -385,12 +385,12 @@ MonoBehaviour:
   seed: merel
   theme: 0
   mapSize: {x: 100, y: 100}
-  minRoomSize: {x: 20, y: 20}
-  maxRoomSize: {x: 40, y: 40}
+  minRoomSize: {x: 10, y: 10}
+  maxRoomSize: {x: 20, y: 20}
   minPathwayCount: 15
   maxPathwayCount: 30
-  minPathwayLength: 30
-  maxPathwayLength: 60
+  minPathwayLength: 20
+  maxPathwayLength: 30
   tileGroundSprite: {fileID: 21300000, guid: f91233df3854ac641b53893599475007, type: 3}
   Rooms: []
   tiles: []

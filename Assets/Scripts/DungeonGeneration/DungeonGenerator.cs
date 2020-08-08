@@ -1,9 +1,5 @@
-﻿using Pathfinding;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
-using System.Management.Instrumentation;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -63,36 +59,6 @@ public class DungeonGenerator : MonoBehaviour
 		Debug.Log("Dungeon Generation Took: " + (DateTime.Now - startTime).Milliseconds + "ms" + " | " + (DateTime.Now - startTime).Seconds + "sec");
 	}
 
-	/// <summary>
-	/// Generates a room at the givin coordinates with the givin min/max roomsize.
-	/// </summary>
-	/// <param name="coordinates"> Room Starting Coordinates. </param>
-	private void GenerateRoom(Vector2Int coordinates)
-	{
-		roomIndex++;
-		GameObject newRoomGO = new GameObject { name = "Room [" + roomIndex + "]" };
-		newRoomGO.transform.position = new Vector3(coordinates.x, coordinates.y, 0);
-		newRoomGO.AddComponent<Room>();
-		Room room = newRoomGO.GetComponent<Room>();
-
-		int roomSizeX = Random.Range(minRoomSize.x, maxRoomSize.x);
-		int roomSizeY = Random.Range(minRoomSize.y, maxRoomSize.y);
-
-		Rooms.Add(room);
-
-		for(int x = 0; x < roomSizeX; x++)
-		{
-			for(int y = 0; y < roomSizeY; y++)
-			{
-				// This prevents a duplicate tile being created.
-				//for(int t = 0; t < tiles.Count; t++)
-				//	if(tiles[t].Coordinates == new Vector2Int(coordinates.x + x, coordinates.y + y))
-				//		return;
-
-				GenerateTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x + x, coordinates.y + y), room);
-			}
-		}
-	}
 
 	/// <summary>
 	/// This function makes it so each room makes a path to the next room in the list.
@@ -164,6 +130,37 @@ public class DungeonGenerator : MonoBehaviour
 		}
 		// Generate one final room for the final pathway to fix the dead end.
 		GenerateRoom(coordinates);
+	}
+
+	/// <summary>
+	/// Generates a room at the givin coordinates with the givin min/max roomsize.
+	/// </summary>
+	/// <param name="coordinates"> Room Starting Coordinates. </param>
+	private void GenerateRoom(Vector2Int coordinates)
+	{
+		roomIndex++;
+		GameObject newRoomGO = new GameObject { name = "Room [" + roomIndex + "]" };
+		newRoomGO.transform.position = new Vector3(coordinates.x, coordinates.y, 0);
+		newRoomGO.AddComponent<Room>();
+		Room room = newRoomGO.GetComponent<Room>();
+
+		int roomSizeX = Random.Range(minRoomSize.x, maxRoomSize.x);
+		int roomSizeY = Random.Range(minRoomSize.y, maxRoomSize.y);
+
+		Rooms.Add(room);
+
+		for(int x = 0; x < roomSizeX; x++)
+		{
+			for(int y = 0; y < roomSizeY; y++)
+			{
+				// This prevents a duplicate tile being created.
+				//for(int t = 0; t < tiles.Count; t++)
+				//	if(tiles[t].Coordinates == new Vector2Int(coordinates.x + x, coordinates.y + y))
+				//		return;
+
+				GenerateTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x + x, coordinates.y + y), room);
+			}
+		}
 	}
 
 	/// <summary>
