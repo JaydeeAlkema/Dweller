@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.ComponentModel;
+using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 public enum GameState
@@ -14,6 +16,12 @@ public class GameManager : MonoBehaviour
 
 	#region Private Variables
 	[SerializeField] private GameState gameState = GameState.Playing;
+
+	[Header("Managers and Spawners")]
+	[SerializeField] private UIManager uiManager = null;
+
+	[Header("Player Properties")]
+	[SerializeField] private GameObject playerPrefab;
 	[SerializeField] private GameObject playerInstance;
 	#endregion
 
@@ -29,22 +37,22 @@ public class GameManager : MonoBehaviour
 		if(!Instance || Instance != this)
 			Instance = this;
 
-		GetComponentsAndObjects();
-	}
-	#endregion
-
-	#region Private Voids
-	/// <summary>
-	/// Get's all the required components and objects from the scene. This is a temp function.
-	/// The GameManager will handle the scene loading later on in the project.
-	/// </summary>
-	private void GetComponentsAndObjects()
-	{
-		PlayerInstance = GameObject.FindGameObjectWithTag("Player");
+		uiManager.enabled = false;
 	}
 	#endregion
 
 	#region Public Voids
+	public void SpawnPlayer(Vector3 position)
+	{
+		if(PlayerInstance)
+			Destroy(playerInstance);
+
+		playerInstance = Instantiate(playerPrefab, position, Quaternion.identity);
+		PlayerInstance.GetComponent<Rigidbody2D>().position = position;
+
+		uiManager.enabled = true;
+	}
+
 	/// <summary>
 	/// Everything that should be done when GameOver.
 	/// </summary>

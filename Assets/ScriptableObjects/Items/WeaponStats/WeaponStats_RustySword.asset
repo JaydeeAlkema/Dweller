@@ -14,4 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageOnHit: 1
   durability: 100
-  attackRange: 0.4
+  attackRange: 0.75
+  attack: 10
+  defense: 10
+  speed: 10
+  evasion: 10
+  accuracy: 10
+  critical: 10

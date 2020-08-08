@@ -14,10 +14,10 @@ public class SmoothCamFollow : MonoBehaviour
 	private Vector3 smoothedPos = new Vector3();
 	#endregion
 
-	#region Private Voids
+	#region Monobehaviour Callbacks
 	private void Update()
 	{
-
+		if(!target) target = GameManager.Instance.PlayerInstance.transform;
 	}
 
 	private void FixedUpdate()
