@@ -14,9 +14,11 @@ public class DungeonGenerator : MonoBehaviour
 	[Space]
 	[SerializeField] private DungeonTheme theme = DungeonTheme.Demonic; // The theme of the dungeon. Since each dungeon is an entire level, we can define the theme high up.
 	[Space]
+	[SerializeField] private Transform roomParentTransform = default;   // Parent of the rooms in the scene.
 	[SerializeField] private Vector2Int minRoomSize = Vector2Int.zero;  // Min Room size.
 	[SerializeField] private Vector2Int maxRoomSize = Vector2Int.zero;  // Max Room size.
 	[Space]
+	[SerializeField] private Transform pathwayParentTransform = default;    // Parent of the pathways in the scene.
 	[SerializeField] private int minPathwayCount = 15;                  // Minimum amount of pathways that will be generated.
 	[SerializeField] private int maxPathwayCount = 30;                  // Maximum amount of pathways that will be generated.
 	[SerializeField] private int minPathwayLength = 10;                 // Minimum length of the pathway before making a turn.
@@ -115,7 +117,7 @@ public class DungeonGenerator : MonoBehaviour
 			// Generate the path for the generated length
 			for(int j = 0; j < pathwayLength; j++)
 			{
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j), coordinates.y + (coordinatesDir.y * j)), null);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j), coordinates.y + (coordinatesDir.y * j)), pathwayParentTransform);
 			}
 
 			// Create a room at the end of each pathway.
@@ -137,20 +139,29 @@ public class DungeonGenerator : MonoBehaviour
 	{
 		roomIndex++;
 		GameObject newRoomGO = new GameObject { name = "Room [" + roomIndex + "]" };
+
+		newRoomGO.transform.parent = roomParentTransform;
 		newRoomGO.transform.position = new Vector3(coordinates.x, coordinates.y, 0);
 		newRoomGO.AddComponent<Room>();
+
 		Room room = newRoomGO.GetComponent<Room>();
 
 		int roomSizeX = Random.Range(minRoomSize.x, maxRoomSize.x);
 		int roomSizeY = Random.Range(minRoomSize.y, maxRoomSize.y);
 
+		if(roomSizeX % 2 == 0 || roomSizeX == maxRoomSize.x || roomSizeX == minRoomSize.x)
+			roomSizeX -= 1;
+		if(roomSizeY % 2 == 0 || roomSizeY == maxRoomSize.y || roomSizeY == minRoomSize.y)
+			roomSizeY -= 1;
+
+		room.RoomSize = new Vector2Int(roomSizeX, roomSizeY);
 		Rooms.Add(room);
 
 		for(int x = 0; x < roomSizeX; x++)
 		{
 			for(int y = 0; y < roomSizeY; y++)
 			{
-				GenerateTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x + x, coordinates.y + y), room);
+				GenerateTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x - (roomSizeX / 2) + x, coordinates.y - (roomSizeY / 2) + y), newRoomGO.transform);
 			}
 		}
 	}
@@ -161,7 +172,7 @@ public class DungeonGenerator : MonoBehaviour
 	/// <param name="tileName"> The name of the tile. </param>
 	/// <param name="coordinates"> The coordinates of the tile. </param>
 	/// <param name="parentRoom"> The parentRoom of the tile. (This is not necessary!). </param>
-	private void GenerateTile(string tileName, Vector2Int coordinates, Room parentRoom)
+	private void GenerateTile(string tileName, Vector2Int coordinates, Transform parentRoom)
 	{
 		// This prevents a duplicate tile being created.
 		for(int t = 0; t < tiles.Count; t++)
@@ -184,7 +195,7 @@ public class DungeonGenerator : MonoBehaviour
 		newTileGO.transform.position = (Vector2)tile.Coordinates;
 		if(parentRoom)
 		{
-			parentRoom.Tiles.Add(tile);
+			parentRoom.GetComponent<Room>()?.Tiles.Add(tile);
 			newTileGO.transform.parent = parentRoom.transform;
 		}
 		tiles.Add(tile);
@@ -210,11 +221,13 @@ public class Tile : MonoBehaviour
 public class Room : MonoBehaviour
 {
 	#region Private Variables
+	[SerializeField] private Vector2Int roomSize = new Vector2Int();
 	[SerializeField] private List<Tile> tiles = new List<Tile>();
 	#endregion
 
 	#region Public Properties
 	public List<Tile> Tiles { get => tiles; set => tiles = value; }
+	public Vector2Int RoomSize { get => roomSize; set => roomSize = value; }
 	#endregion
 }
 
