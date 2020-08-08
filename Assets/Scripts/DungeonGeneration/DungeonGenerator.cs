@@ -53,7 +53,7 @@ public class DungeonGenerator : MonoBehaviour
 		GeneratePathways();
 		// Generate something else...
 
-		Debug.Log("Dungeon Generation Took: " + (DateTime.Now - startTime).Milliseconds + "ms" + " | " + (DateTime.Now - startTime).Seconds + "sec");
+		Debug.Log("Dungeon Generation Took: " + (DateTime.Now - startTime).Milliseconds + "ms");
 	}
 
 
@@ -163,6 +163,11 @@ public class DungeonGenerator : MonoBehaviour
 	/// <param name="parentRoom"> The parentRoom of the tile. (This is not necessary!). </param>
 	private void GenerateTile(string tileName, Vector2Int coordinates, Room parentRoom)
 	{
+		// This prevents a duplicate tile being created.
+		for(int t = 0; t < tiles.Count; t++)
+			if(tiles[t].Coordinates == coordinates)
+				return;
+
 		GameObject newTileGO = new GameObject { name = tileName };
 
 		newTileGO.AddComponent<Tile>();
@@ -172,11 +177,6 @@ public class DungeonGenerator : MonoBehaviour
 		SpriteRenderer spriteRenderer = newTileGO.GetComponent<SpriteRenderer>();
 
 		tile.Coordinates = new Vector2Int(coordinates.x, coordinates.y);
-
-		// This prevents a duplicate tile being created.
-		for(int t = 0; t < tiles.Count; t++)
-			if(tiles[t].Coordinates == tile.Coordinates)
-				return;
 
 		tile.Sprite = tileGroundSprite;
 		spriteRenderer.sprite = tile.Sprite;
