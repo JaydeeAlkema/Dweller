@@ -13,7 +13,6 @@ public class DungeonGenerator : MonoBehaviour
 	[SerializeField] private string seed = "";
 	[Space]
 	[SerializeField] private DungeonTheme theme = DungeonTheme.Demonic; // The theme of the dungeon. Since each dungeon is an entire level, we can define the theme high up.
-	[SerializeField] private Vector2Int mapSize = Vector2Int.zero;      // The size of the maps. How many tiles wide and high.
 	[Space]
 	[SerializeField] private Vector2Int minRoomSize = Vector2Int.zero;  // Min Room size.
 	[SerializeField] private Vector2Int maxRoomSize = Vector2Int.zero;  // Max Room size.
@@ -27,12 +26,10 @@ public class DungeonGenerator : MonoBehaviour
 	[SerializeField] private List<Room> Rooms = new List<Room>();       // List with all the rooms in the dungeon.
 	[SerializeField] private List<Tile> tiles = new List<Tile>();       // List with all the tiles in the dungeon.
 
-	private int coordinateOffset = 1;   // The offset between tiles. a.k.a. the tile width and height.
-	private DateTime startTime;
+	private DateTime startTime; // At which time we started generating the dungeon.
 
-	private int roomIndex = 0;
-	private int pathwayIndex = 0;
-	private int tileIndex = 0;
+	private int roomIndex = 0;      // Index of the room (Used for giving the rooms their unique ID in their names).
+	private int pathwayIndex = 0;   // Index of the Pathway (Used for giving the Pathways their unique ID in their names).
 	#endregion
 
 	#region Monobehaviour Callbacks
@@ -84,7 +81,7 @@ public class DungeonGenerator : MonoBehaviour
 				pathwayStartingDirection = Random.Range(1, 5);
 			}
 
-			Debug.Log(previousPathwayDir + " " + pathwayStartingDirection);
+			//Debug.Log(previousPathwayDir + " " + pathwayStartingDirection);
 
 			// Set coordinates direction.
 			switch(pathwayStartingDirection)
@@ -153,11 +150,6 @@ public class DungeonGenerator : MonoBehaviour
 		{
 			for(int y = 0; y < roomSizeY; y++)
 			{
-				// This prevents a duplicate tile being created.
-				//for(int t = 0; t < tiles.Count; t++)
-				//	if(tiles[t].Coordinates == new Vector2Int(coordinates.x + x, coordinates.y + y))
-				//		return;
-
 				GenerateTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x + x, coordinates.y + y), room);
 			}
 		}
@@ -180,6 +172,12 @@ public class DungeonGenerator : MonoBehaviour
 		SpriteRenderer spriteRenderer = newTileGO.GetComponent<SpriteRenderer>();
 
 		tile.Coordinates = new Vector2Int(coordinates.x, coordinates.y);
+
+		// This prevents a duplicate tile being created.
+		for(int t = 0; t < tiles.Count; t++)
+			if(tiles[t].Coordinates == tile.Coordinates)
+				return;
+
 		tile.Sprite = tileGroundSprite;
 		spriteRenderer.sprite = tile.Sprite;
 
