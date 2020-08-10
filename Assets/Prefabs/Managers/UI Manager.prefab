@@ -43,6 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d6ccd61a21497468b6cfa7175d5822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dungeonGenerator: {fileID: 0}
+  seedText: {fileID: 0}
   playerHeartLayoutGroup: {fileID: 0}
   playerHeartPrefab: {fileID: 3008333613791303636, guid: c605992e5c7147e4aa0c1ebfe9a1d225,
     type: 3}

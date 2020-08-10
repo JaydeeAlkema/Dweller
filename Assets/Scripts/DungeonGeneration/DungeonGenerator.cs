@@ -25,7 +25,15 @@ public class DungeonGenerator : MonoBehaviour
 	[SerializeField] private int maxPathwayCount = 30;                  // Maximum amount of pathways that will be generated.
 	[SerializeField] private int minPathwayLength = 10;                 // Minimum length of the pathway before making a turn.
 	[SerializeField] private int maxPathwayLength = 20;                 // Maximum length of the pathway before making a turn.
+
+	[Header("Wall Sprites")]
 	[SerializeField] private Sprite tileGroundSprite = null;            // Tile Ground Sprite.
+	[SerializeField] private Sprite tileWallLeftSprite = null;          // Tile Wall Left Sprite.
+	[SerializeField] private Sprite tileWallTopSprite = null;           // Tile Wall Top Sprite.
+
+	[Header("Corner Sprites")]
+	[SerializeField] private Sprite tileOuterCornerLeftSprite = null;        // Tile Outer Corner Left Sprite
+	[SerializeField] private Sprite tileInnerCornerRightSprite = null;       // Tile Inner Corner Right Sprite
 
 	[SerializeField] private List<Room> Rooms = new List<Room>();       // List with all the rooms in the dungeon.
 	[SerializeField] private List<Tile> tiles = new List<Tile>();       // List with all the tiles in the dungeon.
@@ -36,7 +44,18 @@ public class DungeonGenerator : MonoBehaviour
 	private int pathwayIndex = 0;   // Index of the Pathway (Used for giving the Pathways their unique ID in their names).
 	#endregion
 
+	#region Public Properties
+	public string Seed { get => seed; set => seed = value; }
+	#endregion
+
 	#region Monobehaviour Callbacks
+	private void Awake()
+	{
+		if(seed == "")
+			seed = Random.Range(0, int.MaxValue).ToString();
+
+		Random.InitState(seed.GetHashCode());
+	}
 	private void Start()
 	{
 		GenerateDungeon();
@@ -54,12 +73,12 @@ public class DungeonGenerator : MonoBehaviour
 	/// </summary>
 	public void GenerateDungeon()
 	{
-		Random.InitState(seed.GetHashCode());
-
 		startTime = DateTime.Now;
 		Debug.Log("Generating Dungeon");
+
 		GeneratePathways();
-		// Generate something else...
+		PlaceWalls();   // Highly Inefficient... But it works!
+		SpawnEnemiesInsideTheRooms();
 
 		Debug.Log("Dungeon Generation Took: " + (DateTime.Now - startTime).Milliseconds + "ms");
 	}
@@ -121,12 +140,14 @@ public class DungeonGenerator : MonoBehaviour
 			int pathwayLength = Random.Range(minPathwayLength, maxPathwayLength);
 
 			// Generate the path for the generated length
-			// Make the path 3 wide. We dont have to worry about duplicate tiles because those won't get generated anyway.
+			// Make the path 5 wide. We dont have to worry about duplicate tiles because those won't get generated anyway.
 			for(int j = 0; j < pathwayLength; j++)
 			{
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j), coordinates.y + (coordinatesDir.y * j)), pathwayParentTransform, false);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 1), coordinates.y + (coordinatesDir.y * j - 1)), pathwayParentTransform, false);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 1), coordinates.y + (coordinatesDir.y * j + 1)), pathwayParentTransform, false);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j), coordinates.y + (coordinatesDir.y * j)), pathwayParentTransform);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 1), coordinates.y + (coordinatesDir.y * j - 1)), pathwayParentTransform);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 2), coordinates.y + (coordinatesDir.y * j - 2)), pathwayParentTransform);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 1), coordinates.y + (coordinatesDir.y * j + 1)), pathwayParentTransform);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 2), coordinates.y + (coordinatesDir.y * j + 2)), pathwayParentTransform);
 			}
 
 			// Create a room at the end of each pathway.
@@ -159,9 +180,9 @@ public class DungeonGenerator : MonoBehaviour
 		int roomSizeY = Random.Range(minRoomSize.y, maxRoomSize.y);
 
 		// Force the width and height to be an Odd number
-		if(roomSizeX % 2 == 0 || roomSizeX == maxRoomSize.x || roomSizeX == minRoomSize.x)
+		if(roomSizeX % 2 == 0)
 			roomSizeX -= 1;
-		if(roomSizeY % 2 == 0 || roomSizeY == maxRoomSize.y || roomSizeY == minRoomSize.y)
+		if(roomSizeY % 2 == 0)
 			roomSizeY -= 1;
 
 		room.RoomSize = new Vector2Int(roomSizeX, roomSizeY);
@@ -171,7 +192,7 @@ public class DungeonGenerator : MonoBehaviour
 		{
 			for(int y = 0; y < roomSizeY; y++)
 			{
-				GenerateTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x - (roomSizeX / 2) + x, coordinates.y - (roomSizeY / 2) + y), newRoomGO.transform, true);
+				GenerateTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x - (roomSizeX / 2) + x, coordinates.y - (roomSizeY / 2) + y), newRoomGO.transform);
 			}
 		}
 	}
@@ -182,7 +203,7 @@ public class DungeonGenerator : MonoBehaviour
 	/// <param name="tileName"> The name of the tile. </param>
 	/// <param name="coordinates"> The coordinates of the tile. </param>
 	/// <param name="parentRoom"> The parentRoom of the tile. (This is not necessary!). </param>
-	private void GenerateTile(string tileName, Vector2Int coordinates, Transform parentRoom, bool spawnTile)
+	private void GenerateTile(string tileName, Vector2Int coordinates, Transform parentRoom)
 	{
 		// This prevents a duplicate tile being created.
 		for(int t = 0; t < tiles.Count; t++)
@@ -209,23 +230,227 @@ public class DungeonGenerator : MonoBehaviour
 			parentRoom.GetComponent<Room>()?.Tiles.Add(tile);
 			newTileGO.transform.parent = parentRoom.transform;
 		}
-
-		if(spawnTile)
-		{
-			int _spawnChance = Random.Range(0, 100);
-			if(_spawnChance <= spawnChance)
-			{
-				SpawnEnemy(tile.Coordinates);
-			}
-		}
-
 		tiles.Add(tile);
 	}
 
+	/// <summary>
+	/// The placewalls functions will loop through all the tiles in the dungeoon, look at their coordinates and the amount of neighbouring tiles.
+	/// Depending on which neighbouring tiles is missing, it places a wall.
+	/// </summary>
+	private void PlaceWalls()
+	{
+		for(int t = 0; t < tiles.Count; t++)
+		{
+			List<Tile> neighbourTiles = new List<Tile>();
+			Tile tile = tiles[t];
+
+			// Left, Right, Top and Bottom local Tiles.
+			Tile leftTile = null;
+			Tile rightTile = null;
+			Tile topTile = null;
+			Tile bottomTile = null;
+
+			// Top Left, Top Right, Bottom Left and Bottom Right Tiles.
+			Tile topLeftTile = null;
+			Tile topRightTile = null;
+			Tile bottomLeftTile = null;
+			Tile bottomRightTile = null;
+
+			#region Get neighbouring tiles
+			// Get all the neighbour tiles.
+			for(int i = 0; i < tiles.Count; i++)
+			{
+				// Get Left tile
+				if(tiles[i].Coordinates == new Vector2Int(tile.Coordinates.x - 1, tile.Coordinates.y))
+				{
+					leftTile = tiles[i];
+					neighbourTiles.Add(leftTile);
+				}
+
+				// Get Right tile
+				else if(tiles[i].Coordinates == new Vector2Int(tile.Coordinates.x + 1, tile.Coordinates.y))
+				{
+					rightTile = tiles[i];
+					neighbourTiles.Add(rightTile);
+				}
+
+				// Get Up tile
+				else if(tiles[i].Coordinates == new Vector2Int(tile.Coordinates.x, tile.Coordinates.y + 1))
+				{
+					topTile = tiles[i];
+					neighbourTiles.Add(topTile);
+				}
+
+				// Get Down tile
+				else if(tiles[i].Coordinates == new Vector2Int(tile.Coordinates.x, tile.Coordinates.y - 1))
+				{
+					bottomTile = tiles[i];
+					neighbourTiles.Add(bottomTile);
+				}
+
+				// Get Top Left Tile
+				else if(tiles[i].Coordinates == new Vector2Int(tile.Coordinates.x - 1, tile.Coordinates.y + 1))
+				{
+					topLeftTile = tiles[i];
+					neighbourTiles.Add(topLeftTile);
+				}
+
+				// Get Top Right Tile
+				else if(tiles[i].Coordinates == new Vector2Int(tile.Coordinates.x + 1, tile.Coordinates.y + 1))
+				{
+					topRightTile = tiles[i];
+					neighbourTiles.Add(topRightTile);
+				}
+
+				// Get Bottom Left
+				else if(tiles[i].Coordinates == new Vector2Int(tile.Coordinates.x - 1, tile.Coordinates.y - 1))
+				{
+					bottomLeftTile = tiles[i];
+					neighbourTiles.Add(bottomLeftTile);
+				}
+
+				// Get Bottom Right
+				else if(tiles[i].Coordinates == new Vector2Int(tile.Coordinates.x + 1, tile.Coordinates.y - 1))
+				{
+					bottomRightTile = tiles[i];
+					neighbourTiles.Add(bottomRightTile);
+				}
+			}
+
+			if(neighbourTiles.Count < 8)
+			{
+				tile.Type = Tile.TileType.Wall;
+			}
+			#endregion
+
+			#region Left, Right, Top and Bottom checks
+			// Check if this tile is all the way in the left of a room. a.k.a. no Left neighbour.
+			if(leftTile == null && rightTile != null && topTile != null && bottomTile != null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileWallLeftSprite;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+
+			// Check if this tile is all the way in the Right of a room. a.k.a. no Right neighbour.
+			else if(leftTile != null && rightTile == null && topTile != null && bottomTile != null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileWallLeftSprite;
+				tile.GetComponent<SpriteRenderer>().flipX = true;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+
+			// Check if this tile is all the way in the Top of a room. a.k.a. no top neighbour.
+			else if(leftTile != null && rightTile != null && topTile == null && bottomTile != null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileWallTopSprite;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+
+			// Check if this tile is all the way in the Bottom of a room. a.k.a. no bottom neighbour.
+			else if(leftTile != null && rightTile != null && topTile != null && bottomTile == null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileWallTopSprite;
+				tile.GetComponent<SpriteRenderer>().flipY = true;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+			#endregion
+
+			#region Outer Corner Checks
+			// Top Left Outer Corner.
+			else if(leftTile == null && rightTile != null && topTile == null && bottomTile != null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileOuterCornerLeftSprite;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+
+			// Top Right Outer Corner.
+			else if(leftTile != null && rightTile == null && topTile == null && bottomTile != null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileOuterCornerLeftSprite;
+				tile.GetComponent<SpriteRenderer>().flipX = true;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+
+			// Bottom Left Outer Corner.
+			else if(leftTile == null && rightTile != null && topTile != null && bottomTile == null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileOuterCornerLeftSprite;
+				tile.GetComponent<SpriteRenderer>().flipY = true;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+
+			// Bottom Right Outer Corner.
+			else if(leftTile != null && rightTile == null && topTile != null && bottomTile == null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileOuterCornerLeftSprite;
+				tile.GetComponent<SpriteRenderer>().flipY = true;
+				tile.GetComponent<SpriteRenderer>().flipX = true;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+			#endregion
+
+			#region Inner Corner Checks
+			// Top Left Inner Corner
+			// We use a right sprite because the tile might be topleft. But the Sprite is top right because it's an inside corner.
+			else if(topLeftTile == null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileInnerCornerRightSprite;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+			else if(topRightTile == null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileInnerCornerRightSprite;
+				tile.GetComponent<SpriteRenderer>().flipX = true;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+			else if(bottomLeftTile == null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileInnerCornerRightSprite;
+				tile.GetComponent<SpriteRenderer>().flipY = true;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+			else if(bottomRightTile == null)
+			{
+				tile.GetComponent<SpriteRenderer>().sprite = tileInnerCornerRightSprite;
+				tile.GetComponent<SpriteRenderer>().flipY = true;
+				tile.GetComponent<SpriteRenderer>().flipX = true;
+				tile.gameObject.AddComponent<BoxCollider2D>();
+			}
+			#endregion
+		}
+	}
+	#endregion
+
+	#region Enemy Spawning
+	/// <summary>
+	/// Spawns enemies inside the rooms.
+	/// </summary>
+	private void SpawnEnemiesInsideTheRooms()
+	{
+		for(int r = 0; r < Rooms.Count; r++)
+		{
+			for(int t = 0; t < Rooms[r].Tiles.Count; t++)
+			{
+				Tile tile = Rooms[r].Tiles[t];
+
+				if(tile.Type == Tile.TileType.Ground)
+					SpawnEnemy(tile.Coordinates);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Spawns an enemy at the given coordinates
+	/// </summary>
+	/// <param name="coordinates"> Which coordinate to spawn the enemy on. </param>
 	private void SpawnEnemy(Vector2 coordinates)
 	{
-		int randEnemyIndex = Random.Range(0, enemyLists[0].Enemies.Count);
-		GameObject newEnemyGO = Instantiate(enemyLists[0].Enemies[randEnemyIndex], coordinates, Quaternion.identity);
+		int spawnPercentage = Random.Range(0, 100);
+		if(spawnPercentage <= spawnChance)
+		{
+			int randEnemyIndex = Random.Range(0, enemyLists[0].Enemies.Count);
+			GameObject newEnemyGO = Instantiate(enemyLists[0].Enemies[randEnemyIndex], coordinates, Quaternion.identity);
+		}
 	}
 	#endregion
 }
@@ -234,11 +459,19 @@ public class DungeonGenerator : MonoBehaviour
 public class Tile : MonoBehaviour
 {
 	#region Private Variables
+	public enum TileType
+	{
+		Ground,
+		Wall
+	}
+
+	[SerializeField] private TileType type = TileType.Ground;
 	[SerializeField] private Vector2Int coordinates = Vector2Int.zero;
 	[SerializeField] private Sprite sprite = null;
 	#endregion
 
 	#region Public Properties
+	public TileType Type { get => type; set => type = value; }
 	public Vector2Int Coordinates { get => coordinates; set => coordinates = value; }
 	public Sprite Sprite { get => sprite; set => sprite = value; }
 	#endregion

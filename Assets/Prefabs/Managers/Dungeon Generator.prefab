@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9199213881902537734}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2e6a7a9dcf0b7d418f14e867d80deee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: Jaydee
+  seed: 
   theme: 0
   enemyLists:
   - name: Demonic
@@ -51,13 +51,19 @@ MonoBehaviour:
     - {fileID: 4695371258440476625, guid: f13bc30db78564248a82868afcf66dc7, type: 3}
   spawnChance: 1
   roomParentTransform: {fileID: 0}
-  minRoomSize: {x: 15, y: 15}
-  maxRoomSize: {x: 25, y: 25}
+  minRoomSize: {x: 14, y: 14}
+  maxRoomSize: {x: 26, y: 26}
   pathwayParentTransform: {fileID: 0}
   minPathwayCount: 10
   maxPathwayCount: 20
   minPathwayLength: 40
   maxPathwayLength: 50
   tileGroundSprite: {fileID: 21300000, guid: f91233df3854ac641b53893599475007, type: 3}
+  tileWallLeftSprite: {fileID: 21300000, guid: ee76971028decca4c9b5caf95f600c96, type: 3}
+  tileWallTopSprite: {fileID: 21300000, guid: 580cc450e62c24a448f80b8781e3f7fb, type: 3}
+  tileOuterCornerLeftSprite: {fileID: 21300000, guid: 64be7d26c25c29d43bc8bb013c7af7b5,
+    type: 3}
+  tileInnerCornerRightSprite: {fileID: 21300000, guid: 6f819a66d44b820489333f3fed134ec5,
+    type: 3}
   Rooms: []
   tiles: []

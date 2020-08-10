@@ -44,9 +44,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.030000001}
+  m_Offset: {x: 0, y: -0.1}
   serializedVersion: 2
-  m_Radius: 0.15
+  m_Radius: 0.4
 --- !u!1 &4695371258194623363
 GameObject:
   m_ObjectHideFlags: 0
@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 4695371258440476629}
   - component: {fileID: 1498447947266702347}
   m_Layer: 10
-  m_Name: Enemy
+  m_Name: Enemy_Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,9 +220,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.030000001}
+  m_Offset: {x: 0, y: -0.1}
   serializedVersion: 2
-  m_Radius: 0.15
+  m_Radius: 0.4
 --- !u!114 &4695371258440476628
 MonoBehaviour:
   m_ObjectHideFlags: 0

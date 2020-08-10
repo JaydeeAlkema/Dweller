@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using UnityEngine;
-using UnityEngine.PlayerLoop;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public enum GameState

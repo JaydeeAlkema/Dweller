@@ -11,6 +11,10 @@ public class UIManager : MonoBehaviour
 	private static UIManager instance = default;
 
 	#region Private Variables
+	[Header("Dungeon UI Properties")]
+	[SerializeField] private DungeonGenerator dungeonGenerator = default;   // Reference to the Dungeon Generator class.
+	[SerializeField] private TextMeshProUGUI seedText = default;            // Reference to the seed text UI element.
+
 	[Header("Player UI Properties")]
 	[SerializeField] private Transform playerHeartLayoutGroup = default;    // Reference to the player heart layout group
 	[SerializeField] private GameObject playerHeartPrefab = default;        // Prefab of the heart UI element.
@@ -49,6 +53,8 @@ public class UIManager : MonoBehaviour
 	{
 		screenBounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.transform.position.z));
 		playerBehaviour = GameManager.Instance.PlayerInstance.GetComponent<PlayerBehaviour>();
+
+		seedText.text = "Seed: " + dungeonGenerator.Seed;
 
 		InitializePlayerHealthUI();
 		HideFloatingInfoPanel();
