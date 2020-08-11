@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seed: 
   theme: 0
+  enemyParentTransform: {fileID: 0}
   enemyLists:
   - name: Demonic
     enemies:
@@ -58,7 +59,15 @@ MonoBehaviour:
   maxPathwayCount: 20
   minPathwayLength: 40
   maxPathwayLength: 50
-  tileGroundSprite: {fileID: 21300000, guid: f91233df3854ac641b53893599475007, type: 3}
+  tileGroundSprites:
+  - {fileID: 21300000, guid: f91233df3854ac641b53893599475007, type: 3}
+  - {fileID: 21300000, guid: b94b5239d785f1c4ca4a8a845a9973f4, type: 3}
+  - {fileID: 21300000, guid: 6eee1fb6e0c260749be49d21f874fc33, type: 3}
+  - {fileID: 21300000, guid: 81d7179fd7074c84181cae556fe18a59, type: 3}
+  - {fileID: 21300000, guid: 83975ab9b1b6f4540992a40ed5c1784d, type: 3}
+  - {fileID: 21300000, guid: 3d1ffe85de183b843a047c904dfc35f1, type: 3}
+  - {fileID: 21300000, guid: edc15f989fb8ce34084ef15522c83f38, type: 3}
+  - {fileID: 21300000, guid: 6409ca055bb216f42865627836cbe742, type: 3}
   tileWallLeftSprite: {fileID: 21300000, guid: ee76971028decca4c9b5caf95f600c96, type: 3}
   tileWallTopSprite: {fileID: 21300000, guid: 580cc450e62c24a448f80b8781e3f7fb, type: 3}
   tileOuterCornerLeftSprite: {fileID: 21300000, guid: 64be7d26c25c29d43bc8bb013c7af7b5,
