@@ -28,7 +28,7 @@ public class DungeonGenerator : MonoBehaviour
 	[SerializeField] private int maxPathwayLength = 20;                 // Maximum length of the pathway before making a turn.
 
 	[Header("Wall Sprites")]
-	[SerializeField] private Sprite tileGroundSprite = null;            // Tile Ground Sprite.
+	[SerializeField] private Sprite[] tileGroundSprites = null;            // Tile Ground Sprite.
 	[SerializeField] private Sprite tileWallLeftSprite = null;          // Tile Wall Left Sprite.
 	[SerializeField] private Sprite tileWallTopSprite = null;           // Tile Wall Top Sprite.
 
@@ -153,11 +153,11 @@ public class DungeonGenerator : MonoBehaviour
 			// Make the path 5 wide. We dont have to worry about duplicate tiles because those won't get generated anyway.
 			for(int j = 0; j < pathwayLength; j++)
 			{
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j), coordinates.y + (coordinatesDir.y * j)), pathwayParent.transform);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 1), coordinates.y + (coordinatesDir.y * j - 1)), pathwayParent.transform);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 2), coordinates.y + (coordinatesDir.y * j - 2)), pathwayParent.transform);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 1), coordinates.y + (coordinatesDir.y * j + 1)), pathwayParent.transform);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 2), coordinates.y + (coordinatesDir.y * j + 2)), pathwayParent.transform);
+				GenerateGroundTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j), coordinates.y + (coordinatesDir.y * j)), pathwayParent.transform);
+				GenerateGroundTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 1), coordinates.y + (coordinatesDir.y * j - 1)), pathwayParent.transform);
+				GenerateGroundTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 2), coordinates.y + (coordinatesDir.y * j - 2)), pathwayParent.transform);
+				GenerateGroundTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 1), coordinates.y + (coordinatesDir.y * j + 1)), pathwayParent.transform);
+				GenerateGroundTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 2), coordinates.y + (coordinatesDir.y * j + 2)), pathwayParent.transform);
 			}
 
 			// Create a room at the end of each pathway.
@@ -202,18 +202,18 @@ public class DungeonGenerator : MonoBehaviour
 		{
 			for(int y = 0; y < roomSizeY; y++)
 			{
-				GenerateTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x - (roomSizeX / 2) + x, coordinates.y - (roomSizeY / 2) + y), newRoomGO.transform);
+				GenerateGroundTile("Tile [" + (coordinates.x + x) + "]" + " " + "[" + (coordinates.y + y) + "]", new Vector2Int(coordinates.x - (roomSizeX / 2) + x, coordinates.y - (roomSizeY / 2) + y), newRoomGO.transform);
 			}
 		}
 	}
 
 	/// <summary>
-	/// Generates a tile with the given name, coordinates and parrentroom (if given)
+	/// Generates a Ground Tile with the given name, coordinates and parrentroom (if given)
 	/// </summary>
 	/// <param name="tileName"> The name of the tile. </param>
 	/// <param name="coordinates"> The coordinates of the tile. </param>
 	/// <param name="parentTransform"> The parentTransform of the tile. (This is not necessary!). </param>
-	private void GenerateTile(string tileName, Vector2Int coordinates, Transform parentTransform)
+	private void GenerateGroundTile(string tileName, Vector2Int coordinates, Transform parentTransform)
 	{
 		// This removes a possible duplicate tile with the same coordinates.
 		// We could check for duplicate tile and return the function, but this makes the hierarchy cleaner.
@@ -234,7 +234,7 @@ public class DungeonGenerator : MonoBehaviour
 		SpriteRenderer spriteRenderer = newTileGO.GetComponent<SpriteRenderer>();
 
 		tile.Coordinates = new Vector2Int(coordinates.x, coordinates.y);
-		tile.Sprite = tileGroundSprite;
+		tile.Sprite = tileGroundSprites[Random.Range(0, tileGroundSprites.Length)];
 		spriteRenderer.sprite = tile.Sprite;
 
 		newTileGO.transform.position = (Vector2)tile.Coordinates;
