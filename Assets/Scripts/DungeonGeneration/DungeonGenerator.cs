@@ -13,6 +13,7 @@ public class DungeonGenerator : MonoBehaviour
 	[SerializeField] private string seed = "";
 	[Space]
 	[SerializeField] private DungeonTheme theme = DungeonTheme.Demonic; // The theme of the dungeon. Since each dungeon is an entire level, we can define the theme high up.
+	[SerializeField] private Transform enemyParentTransform = default;  // The parent transform of the enemies.
 	[SerializeField] private List<EnemyList> enemyLists = new List<EnemyList>();    // List with Enemy Lists. Within these lists are the enemies that can be spawned per theme.
 	[SerializeField] private int spawnChance = 1;                       // How much percentage chance there is to spawn an enemy.
 	[Space]
@@ -58,7 +59,12 @@ public class DungeonGenerator : MonoBehaviour
 	}
 	private void Start()
 	{
+		startTime = DateTime.Now;
+		Debug.Log("Generating Dungeon");
+
 		GenerateDungeon();
+
+		Debug.Log("Dungeon Generation Took: " + (DateTime.Now - startTime).Milliseconds + "ms");
 
 		// Spawn the player when the dungeon is done generating.
 		Vector2 playerSpawnPos = Rooms[0].transform.position;
@@ -73,22 +79,20 @@ public class DungeonGenerator : MonoBehaviour
 	/// </summary>
 	public void GenerateDungeon()
 	{
-		startTime = DateTime.Now;
-		Debug.Log("Generating Dungeon");
+		GeneratePathwaysWithRooms();
 
-		GeneratePathways();
-		PlaceWalls();   // Highly Inefficient... But it works!
+		// Highly Inefficient... But it works!
+		PlaceWalls();
+
 		SpawnEnemiesInsideTheRooms();
-
-		Debug.Log("Dungeon Generation Took: " + (DateTime.Now - startTime).Milliseconds + "ms");
 	}
 
 
 	/// <summary>
-	/// This function makes it so each room makes a path to the next room in the list.
-	/// For now This is bruteforced, but later on a different technique might get used.
+	/// This function generates a path in a random direction. After the path is generated, a room will be generated at the end of the path.
+	/// This goes on until we reach the amount of pathways chosen.
 	/// </summary>
-	private void GeneratePathways()
+	private void GeneratePathwaysWithRooms()
 	{
 		// pick a random amount of pathways that need to be generated.
 		int pathwayAmount = Random.Range(minPathwayCount, maxPathwayCount);
@@ -139,15 +143,21 @@ public class DungeonGenerator : MonoBehaviour
 			// Decide how long the pathway should be before generating a new one.
 			int pathwayLength = Random.Range(minPathwayLength, maxPathwayLength);
 
+			GameObject pathwayParent = new GameObject
+			{
+				name = "Pathway [" + pathwayIndex + "]",
+			};
+			pathwayParent.transform.parent = pathwayParentTransform;
+
 			// Generate the path for the generated length
 			// Make the path 5 wide. We dont have to worry about duplicate tiles because those won't get generated anyway.
 			for(int j = 0; j < pathwayLength; j++)
 			{
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j), coordinates.y + (coordinatesDir.y * j)), pathwayParentTransform);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 1), coordinates.y + (coordinatesDir.y * j - 1)), pathwayParentTransform);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 2), coordinates.y + (coordinatesDir.y * j - 2)), pathwayParentTransform);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 1), coordinates.y + (coordinatesDir.y * j + 1)), pathwayParentTransform);
-				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 2), coordinates.y + (coordinatesDir.y * j + 2)), pathwayParentTransform);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j), coordinates.y + (coordinatesDir.y * j)), pathwayParent.transform);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 1), coordinates.y + (coordinatesDir.y * j - 1)), pathwayParent.transform);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j - 2), coordinates.y + (coordinatesDir.y * j - 2)), pathwayParent.transform);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 1), coordinates.y + (coordinatesDir.y * j + 1)), pathwayParent.transform);
+				GenerateTile("Pathway [" + pathwayIndex + "]", new Vector2Int(coordinates.x + (coordinatesDir.x * j + 2), coordinates.y + (coordinatesDir.y * j + 2)), pathwayParent.transform);
 			}
 
 			// Create a room at the end of each pathway.
@@ -202,13 +212,18 @@ public class DungeonGenerator : MonoBehaviour
 	/// </summary>
 	/// <param name="tileName"> The name of the tile. </param>
 	/// <param name="coordinates"> The coordinates of the tile. </param>
-	/// <param name="parentRoom"> The parentRoom of the tile. (This is not necessary!). </param>
-	private void GenerateTile(string tileName, Vector2Int coordinates, Transform parentRoom)
+	/// <param name="parentTransform"> The parentTransform of the tile. (This is not necessary!). </param>
+	private void GenerateTile(string tileName, Vector2Int coordinates, Transform parentTransform)
 	{
-		// This prevents a duplicate tile being created.
+		// This removes a possible duplicate tile with the same coordinates.
+		// We could check for duplicate tile and return the function, but this makes the hierarchy cleaner.
 		for(int t = 0; t < tiles.Count; t++)
 			if(tiles[t].Coordinates == coordinates)
-				return;
+			{
+				GameObject tileOBJ = tiles[t].gameObject;
+				tiles.RemoveAt(t);
+				Destroy(tileOBJ);
+			}
 
 		GameObject newTileGO = new GameObject { name = tileName };
 
@@ -219,16 +234,15 @@ public class DungeonGenerator : MonoBehaviour
 		SpriteRenderer spriteRenderer = newTileGO.GetComponent<SpriteRenderer>();
 
 		tile.Coordinates = new Vector2Int(coordinates.x, coordinates.y);
-
 		tile.Sprite = tileGroundSprite;
 		spriteRenderer.sprite = tile.Sprite;
 
 		newTileGO.transform.position = (Vector2)tile.Coordinates;
 
-		if(parentRoom)
+		if(parentTransform)
 		{
-			parentRoom.GetComponent<Room>()?.Tiles.Add(tile);
-			newTileGO.transform.parent = parentRoom.transform;
+			parentTransform.GetComponent<Room>()?.Tiles.Add(tile);
+			newTileGO.transform.parent = parentTransform.transform;
 		}
 		tiles.Add(tile);
 	}
@@ -449,7 +463,7 @@ public class DungeonGenerator : MonoBehaviour
 		if(spawnPercentage <= spawnChance)
 		{
 			int randEnemyIndex = Random.Range(0, enemyLists[0].Enemies.Count);
-			GameObject newEnemyGO = Instantiate(enemyLists[0].Enemies[randEnemyIndex], coordinates, Quaternion.identity);
+			GameObject newEnemyGO = Instantiate(enemyLists[0].Enemies[randEnemyIndex], coordinates, Quaternion.identity, enemyParentTransform);
 		}
 	}
 	#endregion
