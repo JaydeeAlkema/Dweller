@@ -1222,6 +1222,36 @@ PrefabInstance:
       propertyPath: pathwayParentTransform
       value: 
       objectReference: {fileID: 691807206}
+    - target: {fileID: 9199213881902537732, guid: 46bea17b3a7c6874293e0ccdca55e58e,
+        type: 3}
+      propertyPath: maxPathwayCount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9199213881902537732, guid: 46bea17b3a7c6874293e0ccdca55e58e,
+        type: 3}
+      propertyPath: minPathwayLength
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9199213881902537732, guid: 46bea17b3a7c6874293e0ccdca55e58e,
+        type: 3}
+      propertyPath: maxPathwayLength
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 9199213881902537732, guid: 46bea17b3a7c6874293e0ccdca55e58e,
+        type: 3}
+      propertyPath: maxRoomSize.x
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 9199213881902537732, guid: 46bea17b3a7c6874293e0ccdca55e58e,
+        type: 3}
+      propertyPath: maxRoomSize.y
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 9199213881902537732, guid: 46bea17b3a7c6874293e0ccdca55e58e,
+        type: 3}
+      propertyPath: seed
+      value: 690153867
+      objectReference: {fileID: 0}
     - target: {fileID: 9199213881902537734, guid: 46bea17b3a7c6874293e0ccdca55e58e,
         type: 3}
       propertyPath: m_Name

@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 84723366}
   - component: {fileID: 84723365}
   m_Layer: 5
-  m_Name: Min Slider Text
+  m_Name: Min Slider Count Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1641,7 +1641,7 @@ MonoBehaviour:
   m_FillRect: {fileID: 1503864823}
   m_HandleRect: {fileID: 1815426629}
   m_Direction: 0
-  m_MinValue: 35
+  m_MinValue: 20
   m_MaxValue: 50
   m_WholeNumbers: 1
   m_Value: 45
@@ -1950,10 +1950,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 879323872}
   m_HandleRect: {fileID: 28423073}
   m_Direction: 0
-  m_MinValue: 35
+  m_MinValue: 20
   m_MaxValue: 50
   m_WholeNumbers: 1
-  m_Value: 40
+  m_Value: 25
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -1980,7 +1980,7 @@ GameObject:
   - component: {fileID: 694596321}
   - component: {fileID: 694596320}
   m_Layer: 5
-  m_Name: Min Slider Text
+  m_Name: Min Slider Room Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2214,7 +2214,7 @@ GameObject:
   - component: {fileID: 821287965}
   - component: {fileID: 821287964}
   m_Layer: 5
-  m_Name: Max Slider Text
+  m_Name: Max Slider Count Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2999,20 +2999,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8ead0830d37db4408282c7806a1f904, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seed: 
-  minPathwayCount: 15
-  maxPathwayCount: 30
-  minPathwayLength: 10
-  maxPathwayLength: 20
-  minRoomSize: 14
-  maxRoomSize: 26
   seedInputField: {fileID: 1271256351}
   minPathwayCountSlider: {fileID: 1269113499}
+  minPathwayCountText: {fileID: 84723365}
   maxPathwayCountSlider: {fileID: 443122712}
+  maxPathwayCountText: {fileID: 821287964}
   minPathwayLengthSlider: {fileID: 651720013}
+  minPathwayLengthText: {fileID: 1648173331}
   maxPathwayLengthSlider: {fileID: 555828542}
+  maxPathwayLengthText: {fileID: 1481567621}
   minRoomsizeSlider: {fileID: 1734529354}
+  minRoomSizeText: {fileID: 694596320}
   maxRoomsizeSlider: {fileID: 625852652}
+  maxRoomSizeText: {fileID: 2002200840}
 --- !u!1 &1150154489
 GameObject:
   m_ObjectHideFlags: 0
@@ -3957,7 +3956,7 @@ GameObject:
   - component: {fileID: 1481567622}
   - component: {fileID: 1481567621}
   m_Layer: 5
-  m_Name: Max Slider Text
+  m_Name: Max Slider Length Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4686,7 +4685,7 @@ GameObject:
   - component: {fileID: 1648173332}
   - component: {fileID: 1648173331}
   m_Layer: 5
-  m_Name: Min Slider Text
+  m_Name: Min Slider Length Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5684,7 +5683,7 @@ GameObject:
   - component: {fileID: 2002200841}
   - component: {fileID: 2002200840}
   m_Layer: 5
-  m_Name: Max Slider Text
+  m_Name: Max Slider Room Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
