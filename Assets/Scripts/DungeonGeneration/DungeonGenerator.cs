@@ -52,6 +52,17 @@ public class DungeonGenerator : MonoBehaviour
 	#region Monobehaviour Callbacks
 	private void Awake()
 	{
+		seed = PlayerPrefs.GetString("Seed");
+
+		minPathwayCount = PlayerPrefs.GetInt("MinPathwayCount");
+		maxPathwayCount = PlayerPrefs.GetInt("MaxPathwayCount");
+
+		minPathwayLength = PlayerPrefs.GetInt("MinPathwayLength");
+		maxPathwayLength = PlayerPrefs.GetInt("MaxPathwayLength");
+
+		minRoomSize = new Vector2Int(PlayerPrefs.GetInt("MinRoomSize"), PlayerPrefs.GetInt("MinRoomSize"));
+		maxRoomSize = new Vector2Int(PlayerPrefs.GetInt("MaxRoomSize"), PlayerPrefs.GetInt("MaxRoomSize"));
+
 		if(seed == "")
 			seed = Random.Range(0, int.MaxValue).ToString();
 

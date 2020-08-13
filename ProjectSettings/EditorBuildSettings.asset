@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Level_1_PROOF-OF-CONCEPT.unity
     guid: d1c3109bdb54ad54c8a2b2838528e640
   - enabled: 1
+    path: Assets/Scenes/DungeonGeneration_Settings.unity
+    guid: ff0463092948d4548bbb389fdd8007bf
+  - enabled: 1
     path: Assets/Scenes/DungeonGeneration_Test.unity
     guid: 1e8450f94cc329845978f661b40250c7
   m_configObjects: {}
