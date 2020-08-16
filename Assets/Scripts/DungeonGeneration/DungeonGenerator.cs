@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 public class DungeonGenerator : MonoBehaviour
 {
 	#region Private Variables
+	[SerializeField] private bool getPlayerPrefs = false;               // Determines if the playerprefs should be read when within the editor.
 	[SerializeField] private string seed = "";
 	[Space]
 	[SerializeField] private DungeonTheme theme = DungeonTheme.Demonic; // The theme of the dungeon. Since each dungeon is an entire level, we can define the theme high up.
@@ -52,16 +53,20 @@ public class DungeonGenerator : MonoBehaviour
 	#region Monobehaviour Callbacks
 	private void Awake()
 	{
-		seed = PlayerPrefs.GetString("Seed");
+		// Only get the player prefs when not inside the editor or if the boolean is set to true
+		if(!Application.isEditor || getPlayerPrefs)
+		{
+			seed = PlayerPrefs.GetString("Seed");
 
-		minPathwayCount = PlayerPrefs.GetInt("MinPathwayCount");
-		maxPathwayCount = PlayerPrefs.GetInt("MaxPathwayCount");
+			minPathwayCount = PlayerPrefs.GetInt("MinPathwayCount");
+			maxPathwayCount = PlayerPrefs.GetInt("MaxPathwayCount");
 
-		minPathwayLength = PlayerPrefs.GetInt("MinPathwayLength");
-		maxPathwayLength = PlayerPrefs.GetInt("MaxPathwayLength");
+			minPathwayLength = PlayerPrefs.GetInt("MinPathwayLength");
+			maxPathwayLength = PlayerPrefs.GetInt("MaxPathwayLength");
 
-		minRoomSize = new Vector2Int(PlayerPrefs.GetInt("MinRoomSize"), PlayerPrefs.GetInt("MinRoomSize"));
-		maxRoomSize = new Vector2Int(PlayerPrefs.GetInt("MaxRoomSize"), PlayerPrefs.GetInt("MaxRoomSize"));
+			minRoomSize = new Vector2Int(PlayerPrefs.GetInt("MinRoomSize"), PlayerPrefs.GetInt("MinRoomSize"));
+			maxRoomSize = new Vector2Int(PlayerPrefs.GetInt("MaxRoomSize"), PlayerPrefs.GetInt("MaxRoomSize"));
+		}
 
 		if(seed == "")
 			seed = Random.Range(0, int.MaxValue).ToString();
@@ -452,14 +457,18 @@ public class DungeonGenerator : MonoBehaviour
 	/// </summary>
 	private void SpawnEnemiesInsideTheRooms()
 	{
-		for(int r = 0; r < Rooms.Count; r++)
+		// Ignore the first room because that's where the player spawns.
+		for(int r = 1; r < Rooms.Count; r++)
 		{
+			if(Rooms[r].Tiles.Count == 0)
+				return;
+
 			for(int t = 0; t < Rooms[r].Tiles.Count; t++)
 			{
 				Tile tile = Rooms[r].Tiles[t];
 
 				if(tile.Type == Tile.TileType.Ground)
-					SpawnEnemy(tile.Coordinates);
+					SpawnEnemy(tile.Coordinates, Rooms[r].transform);
 			}
 		}
 	}
@@ -468,13 +477,13 @@ public class DungeonGenerator : MonoBehaviour
 	/// Spawns an enemy at the given coordinates
 	/// </summary>
 	/// <param name="coordinates"> Which coordinate to spawn the enemy on. </param>
-	private void SpawnEnemy(Vector2 coordinates)
+	private void SpawnEnemy(Vector2 coordinates, Transform parent = null)
 	{
 		int spawnPercentage = Random.Range(0, 100);
 		if(spawnPercentage <= spawnChance)
 		{
 			int randEnemyIndex = Random.Range(0, enemyLists[0].Enemies.Count);
-			GameObject newEnemyGO = Instantiate(enemyLists[0].Enemies[randEnemyIndex], coordinates, Quaternion.identity, enemyParentTransform);
+			GameObject newEnemyGO = Instantiate(enemyLists[0].Enemies[randEnemyIndex], coordinates, Quaternion.identity, parent);
 		}
 	}
 	#endregion
